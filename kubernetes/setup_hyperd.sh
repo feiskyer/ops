@@ -49,9 +49,10 @@ hyperd_install_src() {
     git clone https://github.com/hyperhq/hyperd $GOPATH/src/github.com/hyperhq/hyperd
     cd $GOPATH/src/github.com/hyperhq/hyperstart
     ./autogen.sh && ./configure && make
-    /bin/cp build/{hyper-initrd.img,kernel} /var/lib/hyper
+    /bin/cp build/hyper-initrd.img /var/lib/hyper
+    /bin/cp build/kernel /var/lib/hyper
     cd $GOPATH/src/github.com/hyperhq/hyperd
-    ./autogen.sh && ./configure
+    ./autogen.sh && ./configure && make
     /bin/cp -f hyperd /usr/bin/hyperd
     /bin/cp -f hyperctl /usr/bin/hyperctl
     # sed -i -e '/unix_sock_rw_perms/d' -e '/unix_sock_admin_perms/d' -e '/clear_emulator_capabilities/d' \

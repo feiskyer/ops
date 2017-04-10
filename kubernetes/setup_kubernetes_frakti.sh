@@ -45,10 +45,10 @@ docker_install_centos() {
 
 go_install() {
     # install golang
-    curl -sL https://storage.googleapis.com/golang/go1.8.1.linux-amd64.tar.gz | tar -C /usr/local -zxf -
+    curl -sL https://storage.googleapis.com/golang/go1.7.5.linux-amd64.tar.gz | tar -C /usr/local -zxf -
     echo 'PATH="/usr/local/sbin:/usr/local/bin:/usr/local/go/bin/:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/go/bin"' >> /etc/environment
     echo 'GOPATH="/go"' >> /etc/environment
-    export PATH="$GOAPTH:/go/bin:/usr/local/go/bin/"
+    export PATH="$PATH:/go/bin:/usr/local/go/bin/"
     export GOPATH="/go"
 }
 
@@ -173,9 +173,10 @@ hyperd_install_src() {
     git clone https://github.com/hyperhq/hyperd $GOPATH/src/github.com/hyperhq/hyperd
     cd $GOPATH/src/github.com/hyperhq/hyperstart
     ./autogen.sh && ./configure && make
-    /bin/cp build/{hyper-initrd.img,kernel} /var/lib/hyper
+    /bin/cp build/hyper-initrd.img /var/lib/hyper
+    /bin/cp build/kernel /var/lib/hyper
     cd $GOPATH/src/github.com/hyperhq/hyperd
-    ./autogen.sh && ./configure
+    ./autogen.sh && ./configure && make
     /bin/cp -f hyperd /usr/bin/hyperd
     /bin/cp -f hyperctl /usr/bin/hyperctl
     # sed -i -e '/unix_sock_rw_perms/d' -e '/unix_sock_admin_perms/d' -e '/clear_emulator_capabilities/d' \
@@ -248,7 +249,7 @@ frakti_build() {
 
 kubelet_config() {
     sed -i '2 i\Environment="KUBELET_EXTRA_ARGS=--container-runtime=remote --container-runtime-endpoint=/var/run/frakti.sock --feature-gates=AllAlpha=true"' /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
-    sytemctl daemon-reload
+    systemctl daemon-reload
 }
 
 kubernetes_setup() {
