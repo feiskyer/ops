@@ -1,0 +1,3 @@
+[submodule "vagrant/learning-tools"]
+	path = vagrant/learning-tools
+	url = https://github.com/lowescott/learning-tools.git
