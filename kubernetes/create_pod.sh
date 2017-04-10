@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 create_pod() {
@@ -24,8 +24,8 @@ EOF
 }
 
 expose_pod() {
-    pod=${POD:-"pod/nginx"}
-    kubectl expose "$pod" nginx --port=80
+    pod=${POD:-"nginx"}
+    kubectl expose pod "$pod" nginx --port=80
 }
 
 evaludate_dns() {
