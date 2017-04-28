@@ -21,3 +21,12 @@ Install kubernetes all-in-one with frakti:
 
 ```sh
 curl http://feisky.xyz/ops/kubernetes/setup_kubernetes_frakti.sh | bash
+```
+
+## Misc
+
+Install golang:
+
+```sh
+curl http://feisky.xyz/ops/kubernetes/golang-install.sh | bash
+```
