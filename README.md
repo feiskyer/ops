@@ -23,6 +23,14 @@ Install kubernetes all-in-one with frakti:
 curl http://feisky.xyz/ops/kubernetes/setup_kubernetes_frakti.sh | bash
 ```
 
+## OVS
+
+Install ovs ovn all-in-one:
+
+```sh
+curl http://feisky.xyz/ops/ovs/ovn-build-start.sh | bash
+```
+
 ## Misc
 
 Install golang:
