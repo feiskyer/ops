@@ -1,5 +1,5 @@
 #!/bin/bash
-local_ip=`hostname -I`
+local_ip=$(hostname -I | awk '{print $1}')
 central_ip=${CENTRAL_IP:-$local_ip}
 encap_type=${ENCAP_TYPE:-"vxlan"}
 
