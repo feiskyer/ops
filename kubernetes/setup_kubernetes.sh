@@ -134,6 +134,8 @@ kubernetes_setup() {
     kubeadm init kubeadm init --pod-network-cidr 10.244.0.0/16 --kubernetes-version latest
     # enable insecure port of kube-apiserver
     sed -i 's/insecure-port=0/insecure-port=8080/' /etc/kubernetes/manifests/kube-apiserver.yaml
+    # wait a while for the apiserver restart
+    sleep 6
     # Optional: enable schedule pods on the master
     export KUBECONFIG=/etc/kubernetes/admin.conf
     kubectl taint nodes --all node-role.kubernetes.io/master:NoSchedule-
