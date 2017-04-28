@@ -51,7 +51,7 @@ start-ovn() {
   /usr/share/openvswitch/scripts/ovn-ctl start_northd
   /usr/share/openvswitch/scripts/ovn-ctl start_controller
   /usr/share/openvswitch/scripts/ovn-ctl start_controller_vtep
-  export CENTRAL_IP=`hostname -I`
+  export CENTRAL_IP=$(hostname -I | awk '{print $1}')
   export LOCAL_IP=${CENTRAL_IP}
   export ENCAP_TYPE=vxlan
   ovs-vsctl set Open_vSwitch . external_ids:ovn-remote="tcp:$CENTRAL_IP:6642" external_ids:ovn-nb="tcp:$CENTRAL_IP:6641" external_ids:ovn-encap-ip=$LOCAL_IP external_ids:ovn-encap-type="$ENCAP_TYPE"
