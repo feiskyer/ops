@@ -23,6 +23,11 @@ master-config() {
 	# node and a logical port and a OVS internal interface named "k8s-$NODE_NAME"
 	# with an IP address via which other nodes should be eventually able to reach
 	# the daemons running on this node.
+  ## SSL k8s.
+  # ovs-vsctl set Open_vSwitch . \
+  #  external_ids:k8s-api-server="https://$K8S_API_SERVER_IP" \
+  #  external_ids:k8s-ca-certificate="$CA_CRT" \
+  #  external_ids:k8s-api-token="$API_TOKEN"
 	ovs-vsctl set Open_vSwitch . external_ids:k8s-api-server="127.0.0.1:8080"
 	ovn-k8s-overlay master-init \
 	  --cluster-ip-subnet=$CLUSTER_IP_SUBNET \
@@ -51,6 +56,8 @@ node-config() {
 	  --cluster-ip-subnet="$CLUSTER_IP_SUBNET" \
 	  --minion-switch-subnet="$MINION_SWITCH_SUBNET" \
 	  --node-name="$(hostname)"
+  # kubelet should be restarted because cni network config changed.
+  systemctl restart kubelet
 }
 
 gateway-config() {
