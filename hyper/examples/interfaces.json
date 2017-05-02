@@ -1,0 +1,25 @@
+{
+  "containers": [
+    {
+      "image": "centos",
+      "name": "kube_cc30271_3a397b47"
+    }
+  ],
+  "id": "kube_centos_default",
+  "labels": {
+    "app": "centos"
+  },
+  "name": "centos",
+  "tty": true,
+  "type": "pod",
+  "uid": "bfad99c1-485d-11e5-9a51-000c29f6dfc5",
+  "interfaces": [
+    {
+      "bridge": "test",
+      "ip": "192.168.25.7/16",
+      "ifname": "testtap",
+      "mac": "d2:6f:e4:22:22:22",
+      "gateway": "192.168.25.254"
+    }
+  ]
+}

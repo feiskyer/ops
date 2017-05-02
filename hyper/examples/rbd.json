@@ -1,0 +1,36 @@
+{
+  "containers": [
+    {
+      "image": "nginx",
+      "ports": [
+        {
+          "containerPort": 80,
+          "protocol": "TCP"
+        }
+      ],
+      "tty": true,
+      "volumes": [
+        {
+          "path": "/var/lib/nginx",
+          "readOnly": false,
+          "volume": "rbd-volume"
+        }
+      ]
+    }
+  ],
+  "tty": true,
+  "volumes": [
+    {
+      "driver": "rbd",
+      "name": "rbd-volume",
+      "option": {
+        "keyring": "AQAtqv9V3u4nKRAA9xfic687DqPW1FV/rly3nw==",
+        "mointors": [
+          "192.168.0.10:6789"
+        ],
+        "user": "test"
+      },
+      "source": "rbd:test/volume1"
+    }
+  ]
+}
