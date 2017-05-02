@@ -26,6 +26,12 @@ build-ubuntu() {
 }
 
 build-centos() {
+  yum install -y rpm-build autoconf automake libtool systemd-units openssl openssl-devel
+  yum install -y python-devel python-twisted-core python-zope-interface python-six desktop-file-utils
+  yum install -y groff graphviz procps-ng checkpolicy selinux-policy-devel libcap-ng-devel
+  rpm -ivh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
+  yum install -y python3-devel kernel-devel
+  ./boot.sh && ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc
   make rpm-fedora RPMBUILD_OPT="--without check"
   make rpm-fedora-kmod
 }
