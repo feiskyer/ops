@@ -1,0 +1,21 @@
+{
+  "containers": [
+    {
+      "image": "nginx",
+      "logPath": "/tmp/container.log",
+      "ports": [
+        {
+          "containerPort": 80,
+          "hostPort": 9983,
+          "protocol": "TCP"
+        }
+      ],
+      "tty": true
+    }
+  ],
+  "id": "nginx",
+  "resource": {
+    "memory": 128,
+    "vcpu": 1
+  }
+}

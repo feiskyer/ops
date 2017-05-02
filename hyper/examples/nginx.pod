@@ -1,0 +1,26 @@
+{
+  "containers": [
+    {
+      "image": "nginx",
+      "ports": [
+        {
+          "containerPort": 80,
+          "protocol": "TCP"
+        }
+      ],
+      "tty": true
+    }
+  ],
+	"id": "nginx",
+  "resource": {
+    "memory": 128,
+    "vcpu": 1
+  },
+	"portmappingWhiteLists": {
+		"internalNetworks": [
+      "192.168.123.1/24"
+		],
+		"externalNetworks": [
+		]
+	}
+}

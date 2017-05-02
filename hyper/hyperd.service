@@ -1,0 +1,19 @@
+[Unit]
+Description=hyperd
+Documentation=http://docs.hyper.sh
+After=network.target
+Requires=
+
+[Service]
+ExecStart=/usr/local/bin/hyperd --nondaemon -v=4
+KillMode=mixed
+KillSignal=SIGHUP
+SendSIGHUP=no
+MountFlags=shared
+LimitNOFILE=1048576
+LimitNPROC=1048576
+LimitCORE=infinity
+
+[Install]
+WantedBy=multi-user.target
+
