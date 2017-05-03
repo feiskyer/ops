@@ -44,5 +44,5 @@ curl http://feisky.xyz/ops/ovs/ovn-build-start.sh | bash
 Install golang:
 
 ```sh
-curl http://feisky.xyz/ops/kubernetes/golang-install.sh | bash
+curl http://feisky.xyz/ops/misc/golang-install.sh | bash
 ```
