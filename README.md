@@ -11,14 +11,22 @@ Tools&scripts for daily devops.
 
 ## Kubernetes
 
-Install kubernetes all-in-one:
+### Install kubernetes all-in-one
 
 ```sh
 curl http://feisky.xyz/ops/kubernetes/setup_kubernetes.sh | bash
 ```
 
-Install kubernetes all-in-one with frakti:
+### Install kubernetes all-in-one with frakti
 
+Install latest stable version:
+
+```sh
+curl -sSL https://github.com/kubernetes/frakti/raw/master/cluster/allinone.sh | bash
+```
+
+Install from source code:
+ 
 ```sh
 curl http://feisky.xyz/ops/kubernetes/setup_kubernetes_frakti.sh | bash
 ```
