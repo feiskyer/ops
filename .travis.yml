@@ -1,1 +1,6 @@
-script: "./get_cpu_type.sh"
+language: go
+sudo: required
+dist: trusty
+
+script:
+  - misc/get_cpu_type.sh
