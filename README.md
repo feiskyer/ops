@@ -1,5 +1,7 @@
 # Devops
 
+[![Build Status](https://travis-ci.org/feiskyer/ops.svg?branch=master)](https://travis-ci.org/feiskyer/ops) 
+
 Tools&scripts for daily devops.
 
 **Contents**
