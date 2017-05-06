@@ -4,7 +4,6 @@
 #
 set -e
 
-
 cni_install_ubuntu() {
     apt-get install -y apt-transport-https
     curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
@@ -28,6 +27,13 @@ gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
 EOF
     setenforce 0
     yum install -y kubernetes-cni
+}
+
+cni-install() {
+	CNI_VERSION="v0.5.2"
+	mkdir -p /etc/cni/net.d  /opt/cni/bin
+	curl -sSL https://github.com/containernetworking/cni/releases/download/${CNI_VERSION}/cni-amd64-v0.5.2.tgz -o cni.tgz
+	tar zxvf cni.tgz -C /opt/cni/bin
 }
 
 cni_setup_bridge() {
@@ -80,16 +86,17 @@ case "$lsb_dist" in
 
     ubuntu)
         cni_install_ubuntu
-        cni_setup_bridge
     ;;
 
     fedora|centos|redhat)
         cni_install_centos
-        cni_setup_bridge
     ;;
 
     *)
-        echo "$lsb_dist is not supported (not in centos|ubuntu)"
+        cni-install
     ;;
 
 esac
+
+# setup bridge network
+cni_setup_bridge
