@@ -11,26 +11,39 @@ Tools&scripts for daily devops.
 - Networking experiments
 - Vagrant tools
 
-## Kubernetes
-
-### Install kubernetes all-in-one
+## Install
 
 ```sh
-curl http://feisky.xyz/ops/kubernetes/setup_kubernetes.sh | bash
+git clone https://github.com/feiskyer/ops.git
+cd ops
 ```
 
-### Install kubernetes all-in-one with frakti
+## Kubernetes
+
+### Install kubernetes
+
+```sh
+./kubernetes/setup_kubernetes.sh
+```
+
+### Install kubernetes with frakti
 
 Install latest stable version:
 
 ```sh
-curl -sSL https://github.com/kubernetes/frakti/raw/master/cluster/allinone.sh | bash
+./kubernetes/setupp_kubernetes_frakti.sh
 ```
 
-Install from source code:
- 
+### Add a node
+
 ```sh
-curl http://feisky.xyz/ops/kubernetes/setup_kubernetes_frakti.sh | bash
+# replace this with yours.
+export TOKEN="xxxx"
+export MASTER_IP="x.x.x.x"
+export CONTAINER_CIDR="10.244.x.0/24"
+
+# Install kubernetes and add it to cluster.
+./kubernetes/add_node.sh
 ```
 
 ## OVS
