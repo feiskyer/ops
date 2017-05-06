@@ -1,0 +1,7 @@
+version: '2'
+services:
+  web:
+    image: nginx
+    fip: x.x.x.x
+    ports:
+      - "80:80"
