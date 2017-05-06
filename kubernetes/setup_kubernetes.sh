@@ -129,6 +129,8 @@ EOF
 }
 
 kubernetes_setup() {
+    docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter
+
     # Setting up the master node
     # export KUBE_HYPERKUBE_IMAGE=
     kubeadm init kubeadm init --pod-network-cidr 10.244.0.0/16 --kubernetes-version latest
