@@ -50,9 +50,3 @@ print runtime_stub.StartContainer(api_pb2.StartContainerRequest(
     container_id=container_resp.container_id))
 ```
 
-## tips for demo
-
-A few packages should be installed:
-
-* CRI-compatible runtime, e.g. dockershim
-* critest and crictl
