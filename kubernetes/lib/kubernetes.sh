@@ -47,7 +47,9 @@ setup-node() {
 
     token="$1"
     master_ip="$2"
-    port="$3"
+    if [[ $# == 3 ]]; then
+        port="$3"
+    fi
     if [ "$port" = "" ]; then
         port="6443"
     fi
