@@ -15,7 +15,7 @@ crictl sandbox ls
 wait
 cat sandbox-config.json
 wait
-sid=$(crictl sandbox create sandbox-config.json)
+sid=$(crictl sandbox run sandbox-config.json)
 echo $sid
 wait
 crictl sandbox ls
