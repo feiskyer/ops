@@ -1,0 +1,12 @@
+{
+    "metadata": {
+        "name": "busybox"
+    },
+    "image": {
+        "image": "busybox"
+    },
+    "command": [
+        "top"
+    ],
+    "linux": {}
+}
