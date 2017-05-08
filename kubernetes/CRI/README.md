@@ -56,4 +56,3 @@ A few packages should be installed:
 
 * CRI-compatible runtime, e.g. dockershim
 * critest and crictl
-* pv (apt-get install pv)
