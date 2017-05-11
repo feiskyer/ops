@@ -4,26 +4,32 @@ set -o nounset
 set -o pipefail
 
 FRAKTI_VERSION=${FRAKTI_VERSION:-"v0.2"}
+KUBERNTES_LIB_ROOT=$(dirname "${BASH_SOURCE}")
+source ${KUBERNTES_LIB_ROOT}/util.sh
 
 install-hyperd-ubuntu() {
-    apt-get update && apt-get install -y qemu libvirt-bin
-    curl -sSL https://hypercontainer.io/install | bash
-    echo -e "Kernel=/var/lib/hyper/kernel\n\
+    if ! command_exists hyperd; then
+        apt-get update && apt-get install -y qemu libvirt-bin
+        curl -sSL https://hypercontainer.io/install | bash
+        echo -e "Kernel=/var/lib/hyper/kernel\n\
 Initrd=/var/lib/hyper/hyper-initrd.img\n\
 Hypervisor=qemu\n\
 StorageDriver=overlay\n\
 gRPCHost=127.0.0.1:22318" > /etc/hyper/config
+    fi
     systemctl enable hyperd
     systemctl restart hyperd
 }
 
 install-hyperd-centos() {
-    curl -sSL https://hypercontainer.io/install | bash
-    echo -e "Kernel=/var/lib/hyper/kernel\n\
+    if ! command_exists hyperd; then
+        curl -sSL https://hypercontainer.io/install | bash
+        echo -e "Kernel=/var/lib/hyper/kernel\n\
 Initrd=/var/lib/hyper/hyper-initrd.img\n\
 Hypervisor=qemu\n\
 StorageDriver=overlay\n\
 gRPCHost=127.0.0.1:22318" > /etc/hyper/config
+    fi
     systemctl enable hyperd
     systemctl restart hyperd
 }
@@ -55,8 +61,10 @@ install-hyperd-src() {
 }
 
 install-frakti() {
-    curl -sSL https://github.com/kubernetes/frakti/releases/download/${FRAKTI_VERSION}/frakti -o /usr/bin/frakti
-    chmod +x /usr/bin/frakti
+    if ! command_exists hyperd; then
+        curl -sSL https://github.com/kubernetes/frakti/releases/download/${FRAKTI_VERSION}/frakti -o /usr/bin/frakti
+        chmod +x /usr/bin/frakti
+    fi
     cgroup_driver=$(docker info | awk '/Cgroup Driver/{print $3}')
     cat <<EOF > /lib/systemd/system/frakti.service
 [Unit]
