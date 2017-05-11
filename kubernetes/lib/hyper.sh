@@ -61,7 +61,7 @@ install-hyperd-src() {
 }
 
 install-frakti() {
-    if ! command_exists hyperd; then
+    if ! command_exists frakti; then
         curl -sSL https://github.com/kubernetes/frakti/releases/download/${FRAKTI_VERSION}/frakti -o /usr/bin/frakti
         chmod +x /usr/bin/frakti
     fi
