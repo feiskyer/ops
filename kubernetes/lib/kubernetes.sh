@@ -6,6 +6,7 @@ set -o pipefail
 FRAKTI_VERSION=${FRAKTI_VERSION:-"v0.2"}
 CLUSTER_CIDR=${CLUSTER_CIDR:-"10.244.0.0/16"}
 CONTAINER_CIDR=${CONTAINER_CIDR:-"10.244.1.0/24"}
+KUBERNTES_LIB_ROOT=$(dirname "${BASH_SOURCE}")
 
 install-kubelet-centos() {
     cat <<EOF > /etc/yum.repos.d/kubernetes.repo
@@ -33,7 +34,9 @@ EOF
 }
 
 setup-master() {
-    kubeadm init kubeadm init --pod-network-cidr ${CLUSTER_CIDR} --kubernetes-version stable
+    kubeadm init kubeadm init --pod-network-cidr ${CLUSTER_CIDR} --config ${KUBERNTES_LIB_ROOT}/kubeadm.yaml
+    # create default host-path storage class
+    kubectl create -f ${KUBERNTES_LIB_ROOT}/storage-class.yaml
     # Also enable schedule pods on the master for allinone.
     export KUBECONFIG=/etc/kubernetes/admin.conf
     kubectl taint nodes --all node-role.kubernetes.io/master-

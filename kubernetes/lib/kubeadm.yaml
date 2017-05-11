@@ -1,0 +1,13 @@
+kind: MasterConfiguration
+apiVersion: kubeadm.k8s.io/v1alpha1
+controllerManagerExtraArgs:
+  horizontal-pod-autoscaler-use-rest-clients: "true"
+  horizontal-pod-autoscaler-sync-period: "10s"
+  node-monitor-grace-period: "10s"
+  feature-gates: "AllAlpha=true"
+  enable-dynamic-provisioning: "true"
+  enable-hostpath-provisioner: "true"
+apiServerExtraArgs:
+  runtime-config: "api/all=true"
+  feature-gates: "AllAlpha=true"
+kubernetesVersion: "stable"
