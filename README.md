@@ -20,18 +20,18 @@ cd ops
 
 ## Kubernetes
 
-### Install kubernetes
+### Install kubernetes (with docker)
 
 ```sh
-./kubernetes/setup_kubernetes.sh
+kubernetes/setup_kubernetes.sh
 ```
 
-### Install kubernetes with frakti
+### Install kubernetes (with hyper via frakti)
 
 Install latest stable version:
 
 ```sh
-./kubernetes/setupp_kubernetes_frakti.sh
+kubernetes/setup_kubernetes_frakti.sh
 ```
 
 ### Add a node
@@ -40,10 +40,21 @@ Install latest stable version:
 # replace this with yours.
 export TOKEN="xxxx"
 export MASTER_IP="x.x.x.x"
-export CONTAINER_CIDR="10.244.x.0/24"
+export CONTAINER_CIDR="10.244.2.0/24"
+```
 
+Add a new node with docker:
+
+```
 # Install kubernetes and add it to cluster.
-./kubernetes/add_node.sh
+kubernetes/add_docker_node.sh
+```
+
+Add a new node with hyper:
+
+```
+# Install kubernetes and add it to cluster.
+kubernetes/add_hyper_node.sh
 ```
 
 ## OVS
@@ -59,5 +70,5 @@ curl http://feisky.xyz/ops/ovs/ovn-build-start.sh | bash
 Install golang:
 
 ```sh
-curl http://feisky.xyz/ops/misc/golang-install.sh | bash
+misc/golang-install.sh
 ```
