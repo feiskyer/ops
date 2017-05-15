@@ -6,7 +6,6 @@ controllerManagerExtraArgs:
   node-monitor-grace-period: "10s"
   feature-gates: "AllAlpha=true"
   enable-dynamic-provisioning: "true"
-  enable-hostpath-provisioner: "true"
 apiServerExtraArgs:
   runtime-config: "api/all=true"
   feature-gates: "AllAlpha=true"
