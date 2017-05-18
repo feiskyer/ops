@@ -21,7 +21,7 @@ else
 fi
 
 # setup ovn
-ovs-vsctl set Open_vSwitch . external_ids:ovn-remote="tcp:$CENTRAL_IP:6642" external_ids:ovn-nb="tcp:$CENTRAL_IP:6641" external_ids:ovn-encap-ip=$LOCAL_IP external_ids:ovn-encap-type="$ENCAP_TYPE"
+ovs-vsctl set Open_vSwitch . external_ids:ovn-remote="tcp:$central_ip:6642" external_ids:ovn-nb="tcp:$central_ip:6641" external_ids:ovn-encap-ip=$local_ip external_ids:ovn-encap-type="$encap_type"
 ovn-nbctl set-connection ptcp:6641
 ovn-sbctl set-connection ptcp:6642
 

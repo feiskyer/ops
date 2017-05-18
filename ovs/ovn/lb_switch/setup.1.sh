@@ -1,0 +1,1 @@
+../l3_gateway/setup.1.sh

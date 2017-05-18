@@ -1,0 +1,1 @@
+../l3_gateway/1_setup_edge.sh
