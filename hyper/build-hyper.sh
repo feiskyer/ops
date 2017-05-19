@@ -3,6 +3,10 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+command_exists() {
+    command -v "$@" > /dev/null 2>&1
+}
+
 lsb-dist() {
     lsb_dist=''
     if command_exists lsb_release; then
