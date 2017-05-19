@@ -48,7 +48,7 @@ build-hyperd() {
 build-hyperstart() {
     git clone https://github.com/hyperhq/hyperstart.git /tmp/hyperstart
     cd /tmp/hyperstart
-    ./autogen.sh && ./configure && mak
+    ./autogen.sh && ./configure && make
     /bin/cp build/{hyper-initrd.img,kernel} /var/lib/hyper/
     /bin/rm -rf /tmp/hyperstart
 }
