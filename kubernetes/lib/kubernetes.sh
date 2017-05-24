@@ -39,6 +39,7 @@ setup-master() {
     kubectl create -f ${KUBERNTES_LIB_ROOT}/storage-class.yaml
     # Also enable schedule pods on the master for allinone.
     export KUBECONFIG=/etc/kubernetes/admin.conf
+    sleep 2
     kubectl taint nodes --all node-role.kubernetes.io/master-
 }
 
