@@ -1,0 +1,7 @@
+[[local|localrc]]
+
+ENABLED_SERVICES=""
+
+enable_plugin stackube git://github.com/feiskyer/ops
+enable_service stackube
+enable_service kubernetes_master

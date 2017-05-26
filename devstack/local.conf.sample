@@ -1,0 +1,33 @@
+[[local|localrc]]
+ADMIN_PASSWORD=password
+DATABASE_PASSWORD=$ADMIN_PASSWORD
+RABBIT_PASSWORD=$ADMIN_PASSWORD
+SERVICE_PASSWORD=$ADMIN_PASSWORD
+
+ENABLED_SERVICES=""
+
+# Keystone
+enable_service key
+enable_service mysql
+enable_service rabbit
+
+# Neutron
+enable_service neutron
+enable_service q-agt
+enable_service q-dhcp
+enable_service q-l3
+enable_service q-svc
+enable_plugin neutron-lbaas git://git.openstack.org/openstack/neutron-lbaas stable/ocata
+enable_service q-lbaasv2
+NEUTRON_LBAAS_SERVICE_PROVIDERV2="LOADBALANCERV2:Haproxy:neutron_lbaas.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver:default"
+
+# Cinder
+ENABLE_CEPH_CINDER=True
+enable_service cinder c-api c-vol c-sch c-bak
+enable_plugin devstack-plugin-ceph git://git.openstack.org/openstack/devstack-plugin-ceph
+
+
+# Kubelet
+# enable_service kubelet
+# enable_plugin kubernetes https://github.com/feiskyer/ops
+
