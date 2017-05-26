@@ -54,7 +54,7 @@ Kernel=/var/lib/hyper/kernel
 Initrd=/var/lib/hyper/hyper-initrd.img
 Hypervisor=qemu
 StorageDriver=overlay
-gRPCHost=127.0.0.1:22318"
+gRPCHost=127.0.0.1:22318
 EOF'
 }
 
