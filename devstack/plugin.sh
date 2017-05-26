@@ -37,6 +37,8 @@ function install_docker {
     else
         exit_distro_not_supported
     fi
+    
+    sudo systemctl start docker
 }
 
 function install_hyper {
@@ -62,8 +64,8 @@ function install_frakti {
     fi
     sudo curl -sSL https://github.com/kubernetes/frakti/releases/download/${FRAKTI_VERSION}/frakti -o /usr/bin/frakti
     sudo chmod +x /usr/bin/frakti
-    cgroup_driver=$(docker info | awk '/Cgroup Driver/{print $3}')
-    sudo sh -c 'cat > /lib/systemd/system/frakti.service <<EOF
+    cgroup_driver=$(sudo docker info | awk '/Cgroup Driver/{print $3}')
+    sudo sh -c "cat > /lib/systemd/system/frakti.service <<EOF
 [Unit]
 Description=Hypervisor-based container runtime for Kubernetes
 Documentation=https://github.com/kubernetes/frakti
@@ -85,7 +87,7 @@ TimeoutStartSec=0
 Restart=on-abnormal
 [Install]
 WantedBy=multi-user.target
-EOF'
+EOF"
 }
 
 function install_kubelet {
@@ -154,13 +156,15 @@ function remove_kubernetes {
 function install_stackube {
     install_docker
     install_hyper
+    install_frakti
     install_kubelet
 }
 
 function init_stackube {
-    sudo systemctl start docker
+    sudo systemctl daemon-reload
+    sudo systemctl restart docker
     sudo systemctl restart hyperd
-    sudo systemctl start frakti
+    sudo systemctl restart frakti
 
     if is_service_enabled kubernetes_master; then
         install_master
