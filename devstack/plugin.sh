@@ -104,8 +104,8 @@ EOF'
         sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
         sudo yum install -y kubernetes-cni kubelet kubeadm kubectl
     elif is_ubuntu; then
-        sudo apt-get update && apt-get install -y apt-transport-https
-        sudo curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+        sudo apt-get update && sudo apt-get install -y apt-transport-https
+        sudo curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
         sudo sh -c 'cat > /etc/apt/sources.list.d/kubernetes.list <<EOF 
 deb http://apt.kubernetes.io/ kubernetes-xenial main
 EOF'
