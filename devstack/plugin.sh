@@ -41,7 +41,7 @@ function install_docker {
 
 function install_hyper {
     if is_ubuntu; then
-        sudo apt-get update && apt-get install -y qemu libvirt-bin
+        sudo apt-get update && sudo apt-get install -y qemu libvirt-bin
     elif is_fedora; then
         sudo yum install -y libvirt
     fi
