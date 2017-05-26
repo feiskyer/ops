@@ -56,7 +56,6 @@ Initrd=/var/lib/hyper/hyper-initrd.img\n\
 Hypervisor=qemu\n\
 StorageDriver=overlay\n\
 gRPCHost=127.0.0.1:22318" > /etc/hyper/config
-    fi
     systemctl enable hyperd
     systemctl restart hyperd
 }
