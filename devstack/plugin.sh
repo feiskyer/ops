@@ -3,23 +3,23 @@ STACKUBE_ROOT=$(dirname "${BASH_SOURCE}")
 
 function configure_cni {
     sudo mkdir -p /etc/cni/net.d
-    sudo sh -c 'cat >/etc/cni/net.d/10-mynet.conf <<EOF
+    sudo sh -c "cat >/etc/cni/net.d/10-mynet.conf <<EOF
 {
-    "cniVersion": "0.3.0",
-    "name": "mynet",
-    "type": "bridge",
-    "bridge": "cni0",
-    "isGateway": true,
-    "ipMasq": true,
-    "ipam": {
-        "type": "host-local",
-        "subnet": "${CONTAINER_CIDR}",
-        "routes": [
-            { "dst": "0.0.0.0/0"  }
+    \"cniVersion\": \"0.3.0\",
+    \"name\": \"mynet\",
+    \"type\": \"bridge\",
+    \"bridge\": \"cni0\",
+    \"isGateway\": true,
+    \"ipMasq\": true,
+    \"ipam\": {
+        \"type\": \"host-local\",
+        \"subnet\": \"${CONTAINER_CIDR}\",
+        \"routes\": [
+            { \"dst\": \"0.0.0.0/0\"  }
         ]
     }
 }
-EOF'
+EOF"
     sudo sh -c 'cat >/etc/cni/net.d/99-loopback.conf <<EOF
 {
     "cniVersion": "0.3.0",
@@ -121,7 +121,9 @@ EOF'
 function install_master {
     sudo kubeadm init kubeadm init --pod-network-cidr ${CLUSTER_CIDR} --config ${STACKUBE_ROOT}/kubeadm.yaml
     # Enable schedule pods on the master for testing.
-    export KUBECONFIG=/etc/kubernetes/admin.conf
+    sudo cp /etc/kubernetes/admin.conf $HOME/
+    sudo chown $(id -u):$(id -g) $HOME/admin.conf
+    export KUBECONFIG=$HOME/admin.conf
     kubectl taint nodes --all node-role.kubernetes.io/master-
 }
 
