@@ -166,7 +166,7 @@ function install_stackube {
 function init_stackube {
     if is_service_enabled kubernetes_master; then
         install_master
-    else is_service_enabled kubernetes_node; then
+    elif is_service_enabled kubernetes_node; then
         install_node
     fi
 }
