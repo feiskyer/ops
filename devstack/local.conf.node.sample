@@ -1,0 +1,27 @@
+[[local|localrc]]
+# Set to local host's IP
+HOST_IP=10.0.0.3
+# Set to master node's IP
+SERVICE_HOST="10.0.0.2"
+MYSQL_HOST=${SERVICE_HOST}
+RABBIT_HOST=${SERVICE_HOST}
+ADMIN_PASSWORD=password
+DATABASE_PASSWORD=$ADMIN_PASSWORD
+RABBIT_PASSWORD=$ADMIN_PASSWORD
+SERVICE_PASSWORD=$ADMIN_PASSWORD
+
+ENABLED_SERVICES=""
+
+# Neutron
+enable_service q-agt
+
+# Kubernetes
+STACKUBE_HOME=${STACKUBE_HOME:-$DEST/stackube}
+# Kubernetes master IP, should set to master IP for minions
+KUBERNETES_MASTER_IP=${SERVICE_HOST}
+KUBEADM_TOKEN="token"
+CONTAINER_CIDR="10.244.2.0/24"
+enable_plugin stackube git://github.com/feiskyer/ops
+enable_service stackube
+# Enable kubernetes node components
+enable_service kubernetes_node

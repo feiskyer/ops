@@ -26,8 +26,8 @@ ENABLE_CEPH_CINDER=True
 enable_service cinder c-api c-vol c-sch c-bak
 enable_plugin devstack-plugin-ceph git://git.openstack.org/openstack/devstack-plugin-ceph
 
-
-# Kubelet
-# enable_service kubelet
-# enable_plugin kubernetes https://github.com/feiskyer/ops
-
+# Kubernetes
+enable_plugin stackube git://github.com/feiskyer/ops
+enable_service stackube
+# Enable kubernetes master components
+enable_service kubernetes_master
