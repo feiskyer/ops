@@ -47,7 +47,8 @@ function install_hyper {
     elif is_fedora; then
         sudo yum install -y libvirt
     fi
-
+    
+    sudo systemctl restart libvirtd
     curl -sSL https://hypercontainer.io/install | sudo bash
     sudo sh -c 'cat>/etc/hyper/config <<EOF
 Kernel=/var/lib/hyper/kernel
@@ -165,6 +166,7 @@ function install_stackube {
 function init_stackube {
     sudo systemctl daemon-reload
     sudo systemctl restart docker
+    sudo systemctl restart libvirtd
     sudo systemctl restart hyperd
     sudo systemctl restart frakti
 
