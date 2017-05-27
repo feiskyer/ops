@@ -126,7 +126,7 @@ EOF'
 
 function install_master {
     # keystone v3 is not supported in k8s keystone authn
-    # sed -i "s/KEYSTONE_HOST/${SERVICE_HOST}/g" ${STACKUBE_ROOT}/kubeadm.yaml
+    sed -i "s/KEYSTONE_HOST/${SERVICE_HOST}/g" ${STACKUBE_ROOT}/kubeadm.yaml
     sudo kubeadm init kubeadm init --pod-network-cidr ${CLUSTER_CIDR} --config ${STACKUBE_ROOT}/kubeadm.yaml
     # Enable schedule pods on the master for testing.
     sudo cp /etc/kubernetes/admin.conf $HOME/
