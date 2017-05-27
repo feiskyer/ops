@@ -68,3 +68,12 @@ type=rpm-md
 gpgkey=https://download.ceph.com/keys/release.asc
 EOF'
 ```
+
+**sudo ip -6 addr replace 2001:db8::2/64 dev br-ex Permission denied**
+
+Enable ipv6
+
+```sh
+sudo sysctl -w net.ipv6.conf.all.disable_ipv6=0
+sudo sysctl -w net.ipv6.conf.default.disable_ipv6=0
+```
