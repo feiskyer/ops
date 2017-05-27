@@ -6,7 +6,7 @@ controllerManagerExtraArgs:
   node-monitor-grace-period: "10s"
   feature-gates: "AllAlpha=true"
   enable-dynamic-provisioning: "true"
+kubernetesVersion: "stable"
 apiServerExtraArgs:
   runtime-config: "api/all=true"
   feature-gates: "AllAlpha=true"
-kubernetesVersion: "stable"
