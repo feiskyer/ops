@@ -10,4 +10,4 @@ kubernetesVersion: "stable"
 apiServerExtraArgs:
   runtime-config: "api/all=true"
   feature-gates: "AllAlpha=true"
-  experimental-keystone-url: "https://KEYSTONE_HOST:5000/v3"
+  # experimental-keystone-url: "https://KEYSTONE_HOST:5000/v3"
