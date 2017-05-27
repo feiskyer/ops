@@ -49,7 +49,12 @@ function install_hyper {
     fi
     
     sudo systemctl restart libvirtd
-    curl -sSL https://hypercontainer.io/install | sudo bash
+    
+    if command -v /usr/bin/hyperd > /dev/null 2>&1; then
+        echo "hyperd already installed on this host, using it instead"
+    else
+        curl -sSL https://hypercontainer.io/install | sudo bash
+    fi
     sudo sh -c 'cat>/etc/hyper/config <<EOF
 Kernel=/var/lib/hyper/kernel
 Initrd=/var/lib/hyper/hyper-initrd.img
