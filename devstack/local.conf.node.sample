@@ -19,6 +19,8 @@ enable_service q-agt
 STACKUBE_HOME=${STACKUBE_HOME:-$DEST/stackube}
 # Kubernetes master IP, should set to master IP for minions
 KUBERNETES_MASTER_IP=${SERVICE_HOST}
+# Get token by running following command on the master node
+# sudo kubeadm token list | awk '/kubeadm/{print $1}'
 KUBEADM_TOKEN="token"
 CONTAINER_CIDR="10.244.2.0/24"
 enable_plugin stackube git://github.com/feiskyer/ops
