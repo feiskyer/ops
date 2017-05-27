@@ -3,23 +3,23 @@ STACKUBE_ROOT=$(dirname "${BASH_SOURCE}")
 
 function configure_cni {
     sudo mkdir -p /etc/cni/net.d
-    sudo sh -c 'cat >/etc/cni/net.d/10-mynet.conf <<EOF
+    sudo sh -c "cat >/etc/cni/net.d/10-mynet.conf <<EOF
 {
-    "cniVersion": "0.3.0",
-    "name": "mynet",
-    "type": "bridge",
-    "bridge": "cni0",
-    "isGateway": true,
-    "ipMasq": true,
-    "ipam": {
-        "type": "host-local",
-        "subnet": "${CONTAINER_CIDR}",
-        "routes": [
-            { "dst": "0.0.0.0/0"  }
+    \"cniVersion\": \"0.3.0\",
+    \"name\": \"mynet\",
+    \"type\": \"bridge\",
+    \"bridge\": \"cni0\",
+    \"isGateway\": true,
+    \"ipMasq\": true,
+    \"ipam\": {
+        \"type\": \"host-local\",
+        \"subnet\": \"${CONTAINER_CIDR}\",
+        \"routes\": [
+            { \"dst\": \"0.0.0.0/0\"  }
         ]
     }
 }
-EOF'
+EOF"
     sudo sh -c 'cat >/etc/cni/net.d/99-loopback.conf <<EOF
 {
     "cniVersion": "0.3.0",
@@ -37,11 +37,13 @@ function install_docker {
     else
         exit_distro_not_supported
     fi
+    
+    sudo systemctl start docker
 }
 
 function install_hyper {
     if is_ubuntu; then
-        sudo apt-get update && apt-get install -y qemu libvirt-bin
+        sudo apt-get update && sudo apt-get install -y qemu libvirt-bin
     elif is_fedora; then
         sudo yum install -y libvirt
     fi
@@ -52,7 +54,7 @@ Kernel=/var/lib/hyper/kernel
 Initrd=/var/lib/hyper/hyper-initrd.img
 Hypervisor=qemu
 StorageDriver=overlay
-gRPCHost=127.0.0.1:22318"
+gRPCHost=127.0.0.1:22318
 EOF'
 }
 
@@ -62,8 +64,8 @@ function install_frakti {
     fi
     sudo curl -sSL https://github.com/kubernetes/frakti/releases/download/${FRAKTI_VERSION}/frakti -o /usr/bin/frakti
     sudo chmod +x /usr/bin/frakti
-    cgroup_driver=$(docker info | awk '/Cgroup Driver/{print $3}')
-    sudo sh -c 'cat > /lib/systemd/system/frakti.service <<EOF
+    cgroup_driver=$(sudo docker info | awk '/Cgroup Driver/{print $3}')
+    sudo sh -c "cat > /lib/systemd/system/frakti.service <<EOF
 [Unit]
 Description=Hypervisor-based container runtime for Kubernetes
 Documentation=https://github.com/kubernetes/frakti
@@ -85,7 +87,7 @@ TimeoutStartSec=0
 Restart=on-abnormal
 [Install]
 WantedBy=multi-user.target
-EOF'
+EOF"
 }
 
 function install_kubelet {
@@ -104,8 +106,8 @@ EOF'
         sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
         sudo yum install -y kubernetes-cni kubelet kubeadm kubectl
     elif is_ubuntu; then
-        sudo apt-get update && apt-get install -y apt-transport-https
-        sudo curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+        sudo apt-get update && sudo apt-get install -y apt-transport-https
+        sudo curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
         sudo sh -c 'cat > /etc/apt/sources.list.d/kubernetes.list <<EOF 
 deb http://apt.kubernetes.io/ kubernetes-xenial main
 EOF'
@@ -119,7 +121,9 @@ EOF'
 function install_master {
     sudo kubeadm init kubeadm init --pod-network-cidr ${CLUSTER_CIDR} --config ${STACKUBE_ROOT}/kubeadm.yaml
     # Enable schedule pods on the master for testing.
-    export KUBECONFIG=/etc/kubernetes/admin.conf
+    sudo cp /etc/kubernetes/admin.conf $HOME/
+    sudo chown $(id -u):$(id -g) $HOME/admin.conf
+    export KUBECONFIG=$HOME/admin.conf
     kubectl taint nodes --all node-role.kubernetes.io/master-
 }
 
@@ -154,13 +158,15 @@ function remove_kubernetes {
 function install_stackube {
     install_docker
     install_hyper
+    install_frakti
     install_kubelet
 }
 
 function init_stackube {
-    sudo systemctl start docker
+    sudo systemctl daemon-reload
+    sudo systemctl restart docker
     sudo systemctl restart hyperd
-    sudo systemctl start frakti
+    sudo systemctl restart frakti
 
     if is_service_enabled kubernetes_master; then
         install_master
