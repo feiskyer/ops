@@ -1,0 +1,7 @@
+apiVersion: extensions/v1beta1
+kind: ThirdPartyResource
+metadata:
+  name: network.stackube.kubernetes.io
+description: "Specification of a Network"
+versions:
+- name: v1
