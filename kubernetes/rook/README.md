@@ -116,3 +116,19 @@ s3cmd put /tmp/rookObj --no-ssl --host=${AWS_ENDPOINT} --host-bucket=  s3://rook
 s3cmd get s3://rookbucket/rookObj /tmp/rookObj-download --no-ssl --host=${AWS_ENDPOINT} --host-bucket=
 cat /tmp/rookObj-download
 ```
+
+
+## Special notes for frakti
+
+Because frakti creates pod in hyperVM, which requires setting cpu/memory limits. Or else, it will create hyperVM with 1vcpu and 64MB memory. But 64MB is not sufficient for rook.io components, so we need to set the default memory larger, e.g: 
+
+```sh
+# deploy kubernetes with frakti
+$ curl -sSL https://github.com/kubernetes/frakti/raw/master/cluster/allinone.sh | bash
+
+# change default memory to 256MB, add --memory=256 at the end
+$ grep ExecStart /lib/systemd/system/frakti.service
+ExecStart=/usr/bin/frakti --v=3 --log-dir=/var/log/frakti --logtostderr=false --cgroup-driver=cgroupfs --listen=/var/run/frakti.sock --streaming-server-addr=%H --hyper-endpoint=127.0.0.1:22318 --memory=256
+$ systemctl daemon-reload
+$ systemctl restart frakti
+```
