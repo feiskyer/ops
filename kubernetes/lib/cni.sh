@@ -46,6 +46,10 @@ install-cni-src() {
 }
 
 config-cni() {
+    # Ensure CNI forward
+    iptables -A FORWARD -i cni0 -j ACCEPT
+    iptables -A FORWARD -o cni0 -j ACCEPT
+
     mkdir -p /etc/cni/net.d
     cat >/etc/cni/net.d/10-mynet.conf <<-EOF
 {
@@ -73,6 +77,9 @@ EOF
 }
 
 config-cni-list() {
+    # Ensure CNI forward
+    iptables -A FORWARD -i cni0 -j ACCEPT
+    iptables -A FORWARD -o cni0 -j ACCEPT
     mkdir -p /etc/cni/net.d
     cat >/etc/cni/net.d/10-mynet.conflist <<-EOF
 {
