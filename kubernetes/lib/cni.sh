@@ -37,6 +37,14 @@ EOF
     yum install -y kubernetes-cni
 }
 
+install-cni-src() {
+    mkdir -p /opt/cni/bin
+    git clone https://github.com/containernetworking/plugins $GOPATH/src/github.com/containernetworking/plugins
+    cd $GOPATH/src/github.com/containernetworking/plugins
+    ./build.sh
+    cp bin/* /opt/cni/bin/
+}
+
 config-cni() {
     mkdir -p /etc/cni/net.d
     cat >/etc/cni/net.d/10-mynet.conf <<-EOF
@@ -59,6 +67,42 @@ EOF
     cat >/etc/cni/net.d/99-loopback.conf <<-EOF
 {
     "cniVersion": "0.3.0",
+    "type": "loopback"
+}
+EOF
+}
+
+config-cni-list() {
+    mkdir -p /etc/cni/net.d
+    cat >/etc/cni/net.d/10-mynet.conflist <<-EOF
+{
+    "cniVersion": "0.3.1",
+    "name": "mynet",
+    "plugins": [
+        {
+            "type": "bridge",
+            "bridge": "cni0",
+            "isGateway": true,
+            "ipMasq": true,
+            "ipam": {
+                "type": "host-local",
+                "subnet": "10.30.0.0/16",
+                "routes": [
+                    { "dst": "0.0.0.0/0"   }
+                ]
+            }
+        },
+        {
+            "type": "portmap",
+            "capabilities": {"portMappings": true},
+            "snat": true
+        }
+    ]
+}
+EOF
+    cat >/etc/cni/net.d/99-loopback.conf <<-EOF
+{
+    "cniVersion": "0.3.1",
     "type": "loopback"
 }
 EOF
