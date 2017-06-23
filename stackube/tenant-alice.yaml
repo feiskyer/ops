@@ -6,4 +6,5 @@ metadata:
 spec:
   username: "alice"
   password: "password"
-  tenantID: "xxxx"
+  # or use existing tenant via tenantID
+  # tenantID: "xxxx"

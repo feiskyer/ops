@@ -1,0 +1,10 @@
+apiVersion: "stackube.kubernetes.io/v1"
+kind: Tenant
+metadata:
+  name: alice
+  namespace: default
+spec:
+  username: "alice"
+  password: "password"
+  # or use existing tenant via tenantID
+  # tenantID: "xxxx"

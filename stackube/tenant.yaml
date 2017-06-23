@@ -1,0 +1,7 @@
+apiVersion: extensions/v1beta1
+kind: ThirdPartyResource
+metadata:
+  name: tenant.stackube.kubernetes.io
+description: "A specification of a Tenant"
+versions:
+- name: v1
