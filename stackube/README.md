@@ -20,11 +20,11 @@ curl -sSL https://raw.githubusercontent.com/openstack/stackube/master/devstack/l
 
 ```sh
 # Kubernetes
-export KUBECONFIG=$HOME/admin.conf
+export KUBECONFIG=/etc/kubernetes/admin.conf
 kubectl cluster-info
 
 # OpenStack
-source openrc admin admin
+source /opt/stack/devstack/openrc admin admin
 openstack service list
 ```
 
