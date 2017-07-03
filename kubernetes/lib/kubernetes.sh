@@ -35,7 +35,7 @@ EOF
 }
 
 setup-master() {
-    kubeadm init kubeadm init --pod-network-cidr ${CLUSTER_CIDR} --config ${KUBERNTES_LIB_ROOT}/kubeadm.yaml
+    kubeadm init --pod-network-cidr ${CLUSTER_CIDR} --config ${KUBERNTES_LIB_ROOT}/kubeadm.yaml
     # create default host-path storage class
     # kubectl create -f ${KUBERNTES_LIB_ROOT}/storage-class.yaml
     # Also enable schedule pods on the master for allinone.
