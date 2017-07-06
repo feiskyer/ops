@@ -3,7 +3,6 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-FRAKTI_VERSION=${FRAKTI_VERSION:-"v0.2"}
 CLUSTER_CIDR=${CLUSTER_CIDR:-"10.244.0.0/16"}
 CONTAINER_CIDR=${CONTAINER_CIDR:-"10.244.2.0/24"}
 TOKEN=${TOKEN:-""}
