@@ -21,6 +21,7 @@ gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
 EOF
     setenforce 0
     sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+    # kubernetes-cni will be installed automatically with kubelet
     yum install -y kubernetes-cni kubelet kubeadm kubectl
 }
 
@@ -31,6 +32,7 @@ install-kubelet-ubuntu() {
 deb http://apt.kubernetes.io/ kubernetes-xenial main
 EOF
     apt-get update
+    # kubernetes-cni will be installed automatically with kubelet
     apt-get install -y kubernetes-cni kubelet kubeadm kubectl
 }
 

@@ -22,7 +22,10 @@ case "$lsb_dist" in
         install-docker-ubuntu
         install-frakti
         install-kubelet-ubuntu
-        config-cni
+        # frakti requires a newer CNI, install a latest released one.
+        # TODO: remove this after it is in kubernetes repo
+        install-cni-frakti
+        config-cni-list
         config-kubelet-frakti
         setup-master
     ;;
@@ -32,7 +35,10 @@ case "$lsb_dist" in
         install-docker-centos
         install-frakti
         install-kubelet-centos
-        config-cni
+        # frakti requires a newer CNI, install a latest released one.
+        # TODO: remove this after it is in kubernetes repo
+        install-cni-frakti
+        config-cni-list
         config-kubelet-frakti
         setup-master
     ;;

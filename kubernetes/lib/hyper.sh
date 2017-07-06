@@ -3,7 +3,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-FRAKTI_VERSION=${FRAKTI_VERSION:-"v0.2"}
+FRAKTI_VERSION=${FRAKTI_VERSION:-"v1.0"}
 KUBERNTES_LIB_ROOT=$(dirname "${BASH_SOURCE}")
 source ${KUBERNTES_LIB_ROOT}/util.sh
 

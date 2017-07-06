@@ -8,3 +8,5 @@ source ${KUBERNTES_ROOT}/lib/util.sh
 source ${KUBERNTES_ROOT}/lib/hyper.sh
 
 install-frakti
+install-cni-frakti
+config-cni-list
