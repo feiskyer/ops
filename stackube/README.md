@@ -50,3 +50,79 @@ Set configure in local.conf:
 
 Run `./stack.sh` to install.
 
+## CNI
+
+CNI network config
+
+```json
+{
+    "cniVersion": "0.3.1",
+    "name": "net",
+    "type": "kubestack",
+    "kubestack-config": "/etc/kubestack.conf"
+}
+```
+
+/etc/kubestack.conf
+
+```conf
+[Global]
+auth-url=https://192.168.0.3/identity_admin/v2.0
+username=admin
+password=password
+tenant-name=admin
+region=RegionOne
+ext-net-id=550370a3-4fc2-4494-919d-cae33f5b3de8
+[Plugin]
+plugin-name=ovs
+integration-bridge=br-int
+```
+
+evaluate
+
+```sh
+
+$ cd /root/gopath/src/git.openstack.org/openstack/stackube
+$ sudo ip netns add ns
+
+# Add
+$ echo '{"cniVersion": "0.3.1","name": "net","type": "kubestack","kubestack-config": "/etc/kubestack.conf"}' | sudo CNI_COMMAND=ADD CNI_NETNS=/var/run/netns/ns CNI_PATH=./_output CNI_IFNAME=eth0 CNI_CONTAINERID=id CNI_VERSION=0.3.1 CNI_ARGS='IgnoreUnknown=1;K8S_POD_NAMESPACE=alice;K8S_POD_NAME=pod;K8S_POD_INFRA_CONTAINER_ID=id' ./_output/kubestack
+
+# Del
+$ echo '{"cniVersion": "0.3.1","name": "net","type": "kubestack","kubestack-config": "/etc/kubestack.conf"}' | sudo CNI_COMMAND=DEL CNI_NETNS=/var/run/netns/ns CNI_PATH=./_output CNI_IFNAME=eth0 CNI_CONTAINERID=id CNI_VERSION=0.3.1 CNI_ARGS='IgnoreUnknown=1;K8S_POD_NAMESPACE=alice;K8S_POD_NAME=pod;K8S_POD_INFRA_CONTAINER_ID=id' ./_output/kubestack
+
+# Sample output of bridge plugin.
+$ sudo CNI_PATH=/opt/cni/bin cnitool add mynet /var/run/netns/ns
+{
+    "cniVersion": "0.3.1",
+    "interfaces": [
+        {
+            "name": "cni0",
+            "mac": "0a:58:0a:f4:01:01"
+        },
+        {
+            "name": "vethe7bd96ce",
+            "mac": "c2:36:17:41:aa:45"
+        },
+        {
+            "name": "eth0",
+            "mac": "0a:58:0a:f4:01:0a",
+            "sandbox": "/var/run/netns/ns"
+        }
+    ],
+    "ips": [
+        {
+            "version": "4",
+            "interface": 2,
+            "address": "10.244.1.10/24",
+            "gateway": "10.244.1.1"
+        }
+    ],
+    "routes": [
+        {
+            "dst": "0.0.0.0/0"
+        }
+    ],
+    "dns": {}
+}
+```
