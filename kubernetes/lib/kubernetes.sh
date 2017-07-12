@@ -40,7 +40,9 @@ setup-master() {
     # create default host-path storage class
     # kubectl create -f ${KUBERNTES_LIB_ROOT}/storage-class.yaml
     # Also enable schedule pods on the master for allinone.
-    export KUBECONFIG=/etc/kubernetes/admin.conf
+    mkdir -p $HOME/.kube
+    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+    sudo chown $(id -u):$(id -g) $HOME/.kube/config
     kubectl taint nodes --all node-role.kubernetes.io/master-
 }
 
