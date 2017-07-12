@@ -19,14 +19,14 @@ case "$lsb_dist" in
     ubuntu)
         install-docker-ubuntu
         install-kubelet-ubuntu
-        config-cni-list
+        config-cni
         setup-master
     ;;
 
     fedora|centos|redhat)
         install-docker-centos
         install-kubelet-centos
-        config-cni-list
+        config-cni
         setup-master
     ;;
 
