@@ -1,13 +1,7 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: alice
----
 apiVersion: "stackube.kubernetes.io/v1"
 kind: Tenant
 metadata:
   name: alice
-  namespace: alice
 spec:
   username: "alice"
   password: "password"
