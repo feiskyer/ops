@@ -1,9 +1,10 @@
-apiVersion: "stackube.kubernetes.io/v1"
+# network will be created automatically after tenant is created.
+apiVersion: stackube.kubernetes.io/v1
 kind: Network
 metadata:
   name: alice
   namespace: alice
 spec:
-  cidr: 192.168.1.0/24
-  gateway: 192.168.1.1
-  #networkID: xx-xx-xx-xx
+  cidr: 10.244.0.0/16
+  gateway: 10.244.0.1
+  # networkID: ""
