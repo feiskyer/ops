@@ -1,2 +1,2 @@
 #!/bin/bash
-./stackube-controller -logtostderr=true -v=3 -kubeconfig=/opt/stack/admin.conf -cloudconfig=openstack.conf
+./stackube-controller --v=3 --kubeconfig=/etc/kubernetes/admin.conf --cloudconfig=/etc/stackube.conf

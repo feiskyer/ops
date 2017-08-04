@@ -1,7 +1,13 @@
-apiVersion: extensions/v1beta1
-kind: ThirdPartyResource
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
 metadata:
-  name: tenant.stackube.kubernetes.io
-description: "A specification of a Tenant"
-versions:
-- name: v1
+  name: tenants.stackube.kubernetes.io
+spec:
+  group: stackube.kubernetes.io
+  names:
+    kind: Tenant
+    listKind: TenantList
+    plural: tenants
+    singular: tenant
+  scope: Namespaced
+  version: v1

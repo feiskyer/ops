@@ -99,7 +99,7 @@ config-cni-list() {
             "ipMasq": true,
             "ipam": {
                 "type": "host-local",
-                "subnet": "10.30.0.0/16",
+                "subnet": "${CONTAINER_CIDR}",
                 "routes": [
                     { "dst": "0.0.0.0/0"   }
                 ]
