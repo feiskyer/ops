@@ -1,5 +1,8 @@
+# Ref https://github.com/kubernetes/kubernetes/blob/master/cmd/kubeadm/app/apis/kubeadm/v1alpha1/types.go#L27
 kind: MasterConfiguration
 apiVersion: kubeadm.k8s.io/v1alpha1
+kubernetesVersion: "stable"
+apiServerCertSANs: []
 controllerManagerExtraArgs:
   horizontal-pod-autoscaler-use-rest-clients: "true"
   horizontal-pod-autoscaler-sync-period: "10s"
@@ -9,4 +12,6 @@ controllerManagerExtraArgs:
 apiServerExtraArgs:
   runtime-config: "api/all=true"
   feature-gates: "AllAlpha=true"
-kubernetesVersion: "stable"
+  # experimental-keystone-url: "https://x.x.x.x:5000/v2.0"
+networking:
+  podSubnet: "10.244.0.0/16"
