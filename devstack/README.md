@@ -36,37 +36,11 @@ openstack service list
 
 **Ceph install failed because of package conflicts on CentOS 7**
 
-Configure ceph repo before running stack.sh:
+Install ceph manually and retry devstack:
 
 ```sh
-sudo sh -c 'cat >/etc/yum.repos.d/ceph.repo <<EOF
-[ceph]
-name=Ceph packages for $basearch
-baseurl=http://download.ceph.com/rpm-jewel/el7/$basearch
-enabled=1
-priority=2
-gpgcheck=1
-type=rpm-md
-gpgkey=https://download.ceph.com/keys/release.asc
-
-[ceph-noarch]
-name=Ceph noarch packages
-baseurl=http://download.ceph.com/rpm-jewel/el7/noarch
-enabled=1
-priority=2
-gpgcheck=1
-type=rpm-md
-gpgkey=https://download.ceph.com/keys/release.asc
-
-[ceph-source]
-name=Ceph source packages
-baseurl=http://download.ceph.com/rpm-jewel/el7/SRPMS
-enabled=0
-priority=2
-gpgcheck=1
-type=rpm-md
-gpgkey=https://download.ceph.com/keys/release.asc
-EOF'
+sudo rpm -Uvh https://download.ceph.com/rpm-jewel/el7/noarch/ceph-release-1-1.el7.noarch.rpm
+sudo yum install -y ceph
 ```
 
 **sudo ip -6 addr replace 2001:db8::2/64 dev br-ex Permission denied**
