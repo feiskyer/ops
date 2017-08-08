@@ -1,11 +1,11 @@
-language: go
+#language: go
 sudo: required
 dist: trusty
 
 services:
   - docker
 
-go: 1.8.x
+#go: 1.8.x
 
 before_install:
   - sudo sh -c 'echo "deb https://apt.dockerproject.org/repo ubuntu-$(lsb_release -cs) main" > /etc/apt/sources.list.d/docker.list'
@@ -17,4 +17,5 @@ before_install:
   - sudo docker version
 
 script:
-  - misc/get_cpu_type.sh
+  - docker run -itd -p 80:80 nginx
+  - curl localhost
