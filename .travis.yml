@@ -19,5 +19,5 @@ before_install:
 script:
   - docker run -itd -p 80:80 --name=nginx nginx
   - curl localhost
-  - ip=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}')
+  - ip=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' nginx)
   - curl $ip
