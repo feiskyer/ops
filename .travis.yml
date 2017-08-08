@@ -17,5 +17,7 @@ before_install:
   - sudo docker version
 
 script:
-  - docker run -itd -p 80:80 nginx
+  - docker run -itd -p 80:80 --name=nginx nginx
   - curl localhost
+  - ip=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}')
+  - curl $ip
