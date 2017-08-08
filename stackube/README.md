@@ -126,3 +126,41 @@ $ sudo CNI_PATH=/opt/cni/bin cnitool add mynet /var/run/netns/ns
     "dns": {}
 }
 ```
+
+## User Guide
+
+```sh
+$ cat <<EOF | kubectl create -f -
+apiVersion: "stackube.kubernetes.io/v1"
+kind: Tenant
+metadata:
+  name: test
+spec:
+  username: "test"
+  password: "password"
+EOF
+
+$ cat > test.conf <<EOF
+apiVersion: v1
+kind: Config
+clusters:
+- cluster:
+    insecure-skip-tls-verify: true
+    server: https://192.168.128.66:6443
+  name: stackube
+contexts:
+- context:
+    cluster: stackube
+    namespace: test
+    user: test
+  name: test
+current-context: test
+users:
+- name: test
+  user:
+    password: password
+    username: test
+EOF
+
+kubectl --kubeconfig=./test.conf subcommand...
+```
