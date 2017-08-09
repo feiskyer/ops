@@ -9,13 +9,13 @@ CNI_VERSION=${CNI_VERSION:-"v0.6.0-rc1"}
 install-cni() {
     mkdir -p /etc/cni/net.d  /opt/cni/bin
     curl -sSL https://github.com/containernetworking/cni/releases/download/${CNI_VERSION}/cni-amd64-${CNI_VERSION}.tgz -o cni.tgz
-    tar zxvf cni.tgz -C /opt/cni/bin
+    tar zxvf cni.tgz -C /opt/cni/bin && rm -f cni.tgz
 }
 
 install-cni-frakti() {
     mkdir -p /etc/cni/net.d  /opt/cni/bin
     curl -sSL https://github.com/kubernetes/frakti/releases/download/v1.0/cni-amd64-v0.6.0-rc1.tgz -o cni.tgz
-    tar zxvf cni.tgz -C /opt/cni/bin
+    tar zxvf cni.tgz -C /opt/cni/bin && rm -f cni.tgz
 }
 
 cni_install_ubuntu() {

@@ -186,3 +186,11 @@ EOF
     systemctl enable frakti
     systemctl start frakti
 }
+
+build-hyper-deb() {
+    git clone https://github.com/hyperhq/hyperd $GOPATH/src/github.com/hyperhq/hyperd
+    cd $GOPATH/src/github.com/hyperhq/hyperd/package/ubuntu
+    apt-get install -y qemu autoconf automake pkg-config libdevmapper-dev libsqlite3-dev aufs-tools wget libaio1 libpixman-1-0 dpkg-dev dh-make debhelper libvirt-dev 
+  ./make-deb.sh
+}
+

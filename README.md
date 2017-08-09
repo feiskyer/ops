@@ -23,7 +23,7 @@ cd ops
 ### Install kubernetes (with docker)
 
 ```sh
-kubernetes/setup_kubernetes.sh
+kubernetes/install-kubernetes.sh
 ```
 
 ### Install kubernetes (with hyper via frakti)
@@ -31,7 +31,7 @@ kubernetes/setup_kubernetes.sh
 Install latest stable version:
 
 ```sh
-kubernetes/setup_kubernetes_frakti.sh
+kubernetes/install-kubernetes-frakti.sh
 ```
 
 ### Add a node
@@ -47,14 +47,14 @@ Add a new node with docker:
 
 ```
 # Install kubernetes and add it to cluster.
-kubernetes/add_docker_node.sh
+kubernetes/add-docker-node.sh
 ```
 
 Add a new node with hyper:
 
 ```
 # Install kubernetes and add it to cluster.
-kubernetes/add_hyper_node.sh
+kubernetes/add-hyper-node.sh
 ```
 
 ## OVS
