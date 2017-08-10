@@ -6,6 +6,15 @@ set -o pipefail
 CONTAINER_CIDR=${CONTAINER_CIDR:-"10.244.1.0/24"}
 CNI_VERSION=${CNI_VERSION:-"v0.6.0-rc1"}
 
+install-flannel() {
+    kubectl create -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel-rbac.yml
+    kubectl create -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
+}
+
+install-calico() {
+    kubectl apply -f https://docs.projectcalico.org/v2.4/getting-started/kubernetes/installation/hosted/kubeadm/1.6/calico.yaml
+}
+
 install-cni() {
     mkdir -p /etc/cni/net.d  /opt/cni/bin
     curl -sSL https://github.com/containernetworking/cni/releases/download/${CNI_VERSION}/cni-amd64-${CNI_VERSION}.tgz -o cni.tgz

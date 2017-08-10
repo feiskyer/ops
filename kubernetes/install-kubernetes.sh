@@ -13,21 +13,36 @@ source ${KUBERNTES_ROOT}/lib/kubernetes.sh
 source ${KUBERNTES_ROOT}/lib/cni.sh
 source ${KUBERNTES_ROOT}/lib/hyper.sh
 
+install-network-plugin() {
+    case "${NETWORK_PLUGIN}" in
+        bridge)
+            config-cni
+        calico)
+            install-calico
+        flannel)
+            install-flannel
+        none)
+            echo "No network plugin is running, please add it manually"
+        NONE)
+            echo "No network plugin is running, please add it manually"
+    esac
+}
+
 lsb_dist=$(lsb-dist)
 case "$lsb_dist" in
 
     ubuntu)
         install-docker-ubuntu
         install-kubelet-ubuntu
-        config-cni
         setup-master
+        install-network-plugin
     ;;
 
     fedora|centos|redhat)
         install-docker-centos
         install-kubelet-centos
-        config-cni
         setup-master
+        install-network-plugin
     ;;
 
     *)
