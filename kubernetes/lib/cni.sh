@@ -15,6 +15,10 @@ install-calico() {
     kubectl apply -f https://docs.projectcalico.org/v2.4/getting-started/kubernetes/installation/hosted/kubeadm/1.6/calico.yaml
 }
 
+install-weave() {
+     kubectl apply -n kube-system -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 |tr -d '\n')"
+}
+
 install-cni() {
     mkdir -p /etc/cni/net.d  /opt/cni/bin
     curl -sSL https://github.com/containernetworking/cni/releases/download/${CNI_VERSION}/cni-amd64-${CNI_VERSION}.tgz -o cni.tgz
