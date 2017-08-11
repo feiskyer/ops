@@ -15,16 +15,22 @@ source ${KUBERNTES_ROOT}/lib/hyper.sh
 
 install-network-plugin() {
     case "${NETWORK_PLUGIN}" in
+
         bridge)
             config-cni
+            ;;
+
         calico)
             install-calico
+            ;;
+
         flannel)
             install-flannel
-        none)
+            ;;
+
+        *)
             echo "No network plugin is running, please add it manually"
-        NONE)
-            echo "No network plugin is running, please add it manually"
+            ;;
     esac
 }
 

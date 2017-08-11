@@ -16,17 +16,26 @@ source ${KUBERNTES_ROOT}/lib/hyper.sh
 
 install-network-plugin() {
     case "${NETWORK_PLUGIN}" in
+
         bridge)
             # frakti requires a newer CNI, install a latest released one.
             # TODO: remove this after it is in kubernetes repo
             install-cni-frakti
             config-cni-list
+            ;;
+
         calico)
             install-calico
+            ;;
+
         flannel)
             install-flannel
+            ;;
+
         *)
             echo "No network plugin is running, please add it manually"
+            ;;
+
     esac
 }
 
