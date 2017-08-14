@@ -44,6 +44,10 @@ setup-master() {
     sudo cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
     sudo chown $(id -u):$(id -g) $HOME/.kube/config
     kubectl taint nodes --all node-role.kubernetes.io/master-
+
+    # approve kubelet csr because all alpha features are enabled.
+    # see https://kubernetes.io/docs/admin/kubelet-tls-bootstrapping/
+    kubectl certificate approve $(kubectl get csr | awk '/^csr/{print $1}')
 }
 
 setup-node() {
