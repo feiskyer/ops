@@ -1,6 +1,8 @@
 # Open vSwitch
 
-## Build deb
+## Ubuntu
+
+Build deb:
 
 ```sh
 apt-get install build-essential fakeroot -y
@@ -11,7 +13,16 @@ dpkg-checkbuilddeps
 DEB_BUILD_OPTIONS='parallel=8 nocheck' fakeroot debian/rules binary
 ```
 
-## Build RPM
+Install:
+
+```sh
+apt-get install -y module-assistant dkms python-twisted-web build-essential
+dpkg -i *.deb
+```
+
+## CentOS/REHL
+
+Build RPM:
 
 ```sh
 make rpm-fedora RPMBUILD_OPT="--without check"
