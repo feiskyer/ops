@@ -3,9 +3,10 @@
 ## Build deb
 
 ```sh
-apt-get install build-essential fakeroot
+apt-get install build-essential fakeroot -y
+apt-get install graphviz autoconf automake debhelper dh-autoreconf libssl-dev libtool python-twisted-conch python-zopeinterface python-all -y
 dpkg-checkbuilddeps
-# 已经编译过，需要首先clean
+# If you have run the build before, ensure cleaning first.
 # fakeroot debian/rules clean
 DEB_BUILD_OPTIONS='parallel=8 nocheck' fakeroot debian/rules binary
 ```
@@ -19,3 +20,4 @@ make rpm-fedora RPMBUILD_OPT="--without check"
 
 make rpm-fedora-kmod
 ```
+
