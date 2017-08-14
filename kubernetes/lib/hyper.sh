@@ -4,13 +4,23 @@ set -o nounset
 set -o pipefail
 
 FRAKTI_VERSION=${FRAKTI_VERSION:-"v1.0"}
+# use a prebuild frakti master version.
+FRAKTI_MASTER=${FRAKTI_MASTER:-true}
+# use a prebuild hyperd master version.
+HYPER_MASTER=${HYPER_MASTER:-true}
 KUBERNTES_LIB_ROOT=$(dirname "${BASH_SOURCE}")
 source ${KUBERNTES_LIB_ROOT}/util.sh
 
 install-hyperd-ubuntu() {
     if ! command_exists hyperd; then
         apt-get update && apt-get install -y qemu libvirt-bin
-        curl -sSL https://hypercontainer.io/install | bash
+        if ${HYPER_MASTER} ; then
+            wget https://storage.googleapis.com/frakti/hypercontainer_0.8.1-1_amd64.deb
+            wget https://storage.googleapis.com/frakti/hyperstart_0.8.1-1_amd64.deb
+            dpkg -i hypercontainer_0.8.1-1_amd64.deb hyperstart_0.8.1-1_amd64.deb
+        else
+            curl -sSL https://hypercontainer.io/install | bash
+        fi
         echo -e "Kernel=/var/lib/hyper/kernel\n\
 Initrd=/var/lib/hyper/hyper-initrd.img\n\
 Hypervisor=qemu\n\
@@ -92,7 +102,11 @@ EOF
 
 install-frakti() {
     if ! command_exists frakti; then
-        curl -sSL https://github.com/kubernetes/frakti/releases/download/${FRAKTI_VERSION}/frakti -o /usr/bin/frakti
+        if ${FRAKTI_MASTER} ; then
+            curl -sSL https://storage.googleapis.com/frakti/frakti -o /usr/bin/frakti
+        else
+            curl -sSL https://github.com/kubernetes/frakti/releases/download/${FRAKTI_VERSION}/frakti -o /usr/bin/frakti
+        fi
         chmod +x /usr/bin/frakti
     fi
     cgroup_driver=$(docker info | awk '/Cgroup Driver/{print $3}')
@@ -189,8 +203,9 @@ EOF
 
 build-hyper-deb() {
     git clone https://github.com/hyperhq/hyperd $GOPATH/src/github.com/hyperhq/hyperd
+    git clone https://github.com/hyperhq/hyperstart $GOPATH/src/github.com/hyperhq/hyperstart
     cd $GOPATH/src/github.com/hyperhq/hyperd/package/ubuntu
     apt-get install -y qemu autoconf automake pkg-config libdevmapper-dev libsqlite3-dev aufs-tools wget libaio1 libpixman-1-0 dpkg-dev dh-make debhelper libvirt-dev 
-  ./make-deb.sh
+    ./make-deb.sh
 }
 
