@@ -14,6 +14,7 @@ spec:
     securityContext:
       privileged: true
     volumeMounts:
+    # note: netns volume must be mount as shared.
     - mountPath: /var/run/netns:shared
       name: netns
   dnsPolicy: ClusterFirst
