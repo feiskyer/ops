@@ -50,7 +50,7 @@ Set configure in local.conf:
 
 Run `./stack.sh` to install.
 
-## CNI
+## CNI Internal
 
 CNI network config
 
@@ -162,5 +162,21 @@ users:
     username: test
 EOF
 
-kubectl --kubeconfig=./test.conf subcommand...
+# wait for network Active
+kubectl get namespace test
+kubectl -n test get network -o yaml
+
+# switch to user test's config
+export KUBECONFIG=$(pwd)/test.conf
+
+kubectl -n test run nginx --image=nginx
+# wait for pod running
+kubectl -n test get pod -o wide -w
+# create service
+kubectl -n test expose deploy nginx --port=80 --name=nginx
+kubectl -n test expose deploy nginx --type=LoadBalancer --port=80 --name=http
+# wait for service initialization
+kubectl -n test get service -w
+# visit service inside pod
+kubectl -n test run -i -t --image=busybox sh
 ```
