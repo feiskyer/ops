@@ -209,3 +209,14 @@ build-hyper-deb() {
     ./make-deb.sh
 }
 
+build-hyper-rpm() {
+    # Note: required a running hyperd.
+    git clone https://github.com/hyperhq/hyperd $GOPATH/src/github.com/hyperhq/hyperd
+    git clone https://github.com/hyperhq/hyperstart $GOPATH/src/github.com/hyperhq/hyperstart
+    yum install -y @development-tools git centos-packager rpmdevtools \
+      automake autoconf gcc make glibc-devel glibc-devel.i686 device-mapper-devel \
+      pcre-devel libsepol-devel libselinux-devel systemd-devel sqlite-devel libvirt-devel \
+      gcc-c++ zlib-devel libcap-devel libattr-devel librbd1-devel libtool git gcc make
+    cd $GOPATH/src/github.com/hyperhq/hyperd/package/centos
+    ./make-rpm.sh
+}
