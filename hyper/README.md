@@ -1,8 +1,17 @@
 # HyperContainer
 
-<https://hypercontainer.io/>.
+* Website: <https://hypercontainer.io/>
+* Github: <https://github.com/hyperhq/hyperd>
 
-## Create a Pod via REST API
+## Build deb package
+
+```sh
+docker run -v $(pwd):/data --rm feisky/hyper-build
+```
+
+## Hyperd API Usage
+
+### Create a Pod via REST API
 
 ```sh
 curl --unix-socket /var/run/hyper.sock -X POST "http://localhost/pod/create" \
@@ -18,7 +27,7 @@ curl --unix-socket /var/run/hyper.sock -X POST "http://localhost/pod/create" \
 }'
 ```
 
-## Create a container via REST API
+### Create a container via REST API
 
 ```sh
 curl --unix-socket /var/run/hyper.sock -X POST "http://localhost/container/create?podId=test&name=test" \
