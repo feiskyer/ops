@@ -13,7 +13,55 @@ ovs-install-centos-latest() {
 }
 
 ovs-install-ubuntu() {
-	apt-get install -y openvswitch-switch ovn-central ovn-common ovn-controller-vtep ovn-docker ovn-host
+  # Don't install ubuntu hosted packages because they are old.
+	# apt-get install -y openvswitch-switch ovn-central ovn-common ovn-host
+  apt-get install apt-transport-https
+  echo "deb https://packages.wand.net.nz $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/wand.list
+  curl https://packages.wand.net.nz/keyring.gpg -o /etc/apt/trusted.gpg.d/wand.gpg
+  apt-get update
+  apt-get build-dep dkms
+  apt-get install python-six openssl python-pip -y
+  pip install --upgrade pip
+  apt-get install openvswitch-datapath-dkms -y
+  apt-get install openvswitch-switch openvswitch-common -y
+  pip install ovs
+
+  # on the master, also install
+  apt-get install ovn-central ovn-common -y
+
+  # on the node, also install
+  apt-get install ovn-host ovn-common -y
+}
+
+ovs-install-ubuntu-latest() {
+    apt-get install -y build-essential fakeroot debhelper \
+                    autoconf automake bzip2 libssl-dev \
+                    openssl graphviz python-all procps \
+                    python-dev python-setuptools python-pip \
+                    python-twisted-conch libtool git dh-autoreconf \
+                    linux-headers-$(uname -r)
+    pip install -U pip
+    
+    #Get code and build
+    git clone https://github.com/openvswitch/ovs.git
+    cd ovs
+    ./boot.sh
+    ./configure --prefix=/usr --localstatedir=/var  --sysconfdir=/etc --enable-ssl --with-linux=/lib/modules/`uname -r`/build
+    make -j3
+
+    make install
+    make modules_install
+    pip install ovs
+
+    #Configure kernel modules and start ovs
+    cat > /etc/depmod.d/openvswitch.conf << EOF
+override openvswitch * extra
+override vport-* * extra
+EOF
+
+    depmod -a
+    cp debian/openvswitch-switch.init /etc/init.d/openvswitch-switch
+    /etc/init.d/openvswitch-switch force-reload-kmod
 }
 
 lsb_dist=''
@@ -37,7 +85,7 @@ lsb_dist="$(echo "$lsb_dist" | tr '[:upper:]' '[:lower:]')"
 case "$lsb_dist" in
 
     ubuntu)
-        ovs-install-ubuntu
+        ovs-install-ubuntu-latest
     ;;
 
     fedora|centos|redhat)

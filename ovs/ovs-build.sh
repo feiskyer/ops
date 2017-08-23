@@ -1,5 +1,5 @@
 #!/bin/sh
-# build, install and start ovn
+# build openvswitch packages (rpm or deb).
 
 download-ovs() {
   curl -o openvswitch-2.7.0.tar.gz http://openvswitch.org/releases/openvswitch-2.7.0.tar.gz
