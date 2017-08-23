@@ -47,7 +47,9 @@ setup-master() {
 
     # approve kubelet csr because all alpha features are enabled.
     # see https://kubernetes.io/docs/admin/kubelet-tls-bootstrapping/
-    kubectl certificate approve $(kubectl get csr | awk '/^csr/{print $1}')
+    if [ $(kubectl get csr | awk '/^csr/{print $1}' | wc -l) -gt 0 ]; then
+      kubectl certificate approve $(kubectl get csr | awk '/^csr/{print $1}')
+    fi
 }
 
 setup-node() {

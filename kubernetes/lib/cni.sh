@@ -7,8 +7,8 @@ CONTAINER_CIDR=${CONTAINER_CIDR:-"10.244.1.0/24"}
 CNI_VERSION=${CNI_VERSION:-"v0.6.0-rc1"}
 
 install-flannel() {
-    kubectl create -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel-rbac.yml
-    kubectl create -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
+    kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel-rbac.yml
+    kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
 }
 
 install-calico() {
@@ -16,7 +16,7 @@ install-calico() {
 }
 
 install-weave() {
-     kubectl apply -n kube-system -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 |tr -d '\n')"
+    kubectl apply -f https://cloud.weave.works/k8s/v1.7/net.yaml
 }
 
 install-cni() {

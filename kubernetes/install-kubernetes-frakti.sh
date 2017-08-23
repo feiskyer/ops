@@ -39,6 +39,10 @@ install-network-plugin() {
     esac
 }
 
+fix-dns-resources() {
+  kubectl -n kube-system patch deployment kube-dns -p '{"spec":{"template":{"spec":{"containers":[{"name":"kubedns","resources":{"limits":{"memory":"256Mi"}}},{"name":"dnsmasq","resources":{"limits":{"memory":"128Mi"}}},{"name":"sidecar","resources":{"limits":{"memory":"64Mi"}}}]}}}}'
+}
+
 lsb_dist=$(lsb-dist)
 case "$lsb_dist" in
 
@@ -50,6 +54,7 @@ case "$lsb_dist" in
         config-kubelet-frakti
         setup-master
         install-network-plugin
+        fix-dns-resources
     ;;
 
     fedora|centos|redhat)
@@ -60,6 +65,7 @@ case "$lsb_dist" in
         config-kubelet-frakti
         setup-master
         install-network-plugin
+        fix-dns-resources
     ;;
 
     *)
