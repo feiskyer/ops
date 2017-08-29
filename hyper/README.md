@@ -9,6 +9,12 @@
 docker run -v $(pwd):/data --rm feisky/hyper-build
 ```
 
+## Build RPM for CentOS
+
+```
+docker run -it gnawux/buildenv:centos
+```
+
 ## Hyperd API Usage
 
 ### Create a Pod via REST API
