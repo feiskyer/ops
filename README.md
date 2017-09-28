@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/feiskyer/ops.svg?branch=master)](https://travis-ci.org/feiskyer/ops) 
 
-Tools&scripts for daily devops.
+Tools&scripts for devops.
 
 **Contents**
 
@@ -16,6 +16,21 @@ Tools&scripts for daily devops.
 ```sh
 git clone https://github.com/feiskyer/ops.git
 cd ops
+```
+
+## Docker
+
+Install docker v1.13:
+
+```sh
+kubernetes/install-docker.sh
+```
+
+Install docker latest:
+
+```sh
+export DOCKER_VERSION="latest"
+kubernetes/install-docker.sh
 ```
 
 ## Kubernetes
@@ -43,26 +58,32 @@ export MASTER_IP="x.x.x.x"
 export CONTAINER_CIDR="10.244.2.0/24"
 ```
 
-Add a new node with docker:
+Add a new node with docker runtime:
 
-```
+```sh
 # Install kubernetes and add it to cluster.
 kubernetes/add-docker-node.sh
 ```
 
-Add a new node with hyper:
+Add a new node with hyper runtime:
 
-```
+```sh
 # Install kubernetes and add it to cluster.
 kubernetes/add-hyper-node.sh
 ```
 
 ## OVS
 
-Install ovs ovn all-in-one:
+Install ovs:
 
 ```sh
-curl http://feisky.xyz/ops/ovs/ovn-build-start.sh | bash
+ovs/ovs-install.sh
+```
+
+Start ovn:
+
+```sh
+ovs/ovn-start.sh
 ```
 
 ## Misc

@@ -49,4 +49,3 @@ container_resp = runtime_stub.CreateContainer(api_pb2.CreateContainerRequest(
 print runtime_stub.StartContainer(api_pb2.StartContainerRequest(
     container_id=container_resp.container_id))
 ```
-
