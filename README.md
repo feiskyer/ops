@@ -11,7 +11,7 @@ Tools&scripts for devops.
 - Networking experiments
 - Vagrant tools
 
-## Install
+## Get the scripts
 
 ```sh
 git clone https://github.com/feiskyer/ops.git
@@ -20,36 +20,19 @@ cd ops
 
 ## Docker
 
-Install docker v1.13:
-
-```sh
-kubernetes/install-docker.sh
-```
-
-Install docker latest:
-
-```sh
-export DOCKER_VERSION="latest"
-kubernetes/install-docker.sh
-```
+- Install docker v1.13: `kubernetes/install-docker.sh`
+- Install docker latest: `export DOCKER_VERSION="latest" && kubernetes/install-docker.sh`
 
 ## Kubernetes
 
-### Install kubernetes (with docker)
+### Create a kubernetes cluster master
 
-```sh
-kubernetes/install-kubernetes.sh
-```
+- Install kubernetes with docker: `kubernetes/install-kubernetes.sh`
+- Install kubernetes with frakti: `kubernetes/install-kubernetes-frakti.sh`
 
-### Install kubernetes (with hyper via frakti)
+### Add a new node
 
-Install latest stable version:
-
-```sh
-kubernetes/install-kubernetes-frakti.sh
-```
-
-### Add a node
+Setup token and CIDR first.
 
 ```sh
 # replace this with yours.
@@ -58,38 +41,14 @@ export MASTER_IP="x.x.x.x"
 export CONTAINER_CIDR="10.244.2.0/24"
 ```
 
-Add a new node with docker runtime:
-
-```sh
-# Install kubernetes and add it to cluster.
-kubernetes/add-docker-node.sh
-```
-
-Add a new node with hyper runtime:
-
-```sh
-# Install kubernetes and add it to cluster.
-kubernetes/add-hyper-node.sh
-```
+- Add a new node with docker runtime: `kubernetes/add-docker-node.sh`
+- Add a new node with frakti runtime: `kubernetes/add-hyper-node.sh`
 
 ## OVS
 
-Install ovs:
-
-```sh
-ovs/ovs-install.sh
-```
-
-Start ovn:
-
-```sh
-ovs/ovn-start.sh
-```
+- Install ovs: `ovs/ovs-install.sh`
+- Start ovn: `ovs/ovn-start.sh`
 
 ## Misc
 
-Install golang:
-
-```sh
-misc/golang-install.sh
-```
+- Install golang: `misc/golang-install.sh`
