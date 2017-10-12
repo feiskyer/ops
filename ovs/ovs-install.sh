@@ -1,14 +1,17 @@
 #!/bin/bash
+# Install openvswitch via source code or rpms/debs.
+
+OVS_VERSION=${OVS_VERSION:-"stable"}
 
 ovs-install-centos() {
-  yum install centos-release-openstack-newton
-  yum install openvswitch
+  yum install centos-release-openstack-pike
+  yum install -y openvswitch openvswitch-ovn-*
   systemctl enable openvswitch
   systemctl start openvswitch
 }
 
 ovs-install-centos-latest() {
-  wget -o /etc/yum.repos.d/ovs-master.repo https://copr.fedorainfracloud.org/coprs/leifmadsen/ovs-master/repo/epel-7/leifmadsen-ovs-master-epel-7.repo
+  wget -O /etc/yum.repos.d/ovs-master.repo https://copr.fedorainfracloud.org/coprs/leifmadsen/ovs-master/repo/epel-7/leifmadsen-ovs-master-epel-7.repo
   yum install openvswitch openvswitch-ovn-*
 }
 
@@ -18,8 +21,9 @@ ovs-install-ubuntu() {
   apt-get install apt-transport-https
   echo "deb https://packages.wand.net.nz $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/wand.list
   curl https://packages.wand.net.nz/keyring.gpg -o /etc/apt/trusted.gpg.d/wand.gpg
+  apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
   apt-get update
-  apt-get build-dep dkms
+  apt-get -y build-dep dkms
   apt-get install python-six openssl python-pip -y
   pip install --upgrade pip
   apt-get install openvswitch-datapath-dkms -y
@@ -85,11 +89,19 @@ lsb_dist="$(echo "$lsb_dist" | tr '[:upper:]' '[:lower:]')"
 case "$lsb_dist" in
 
     ubuntu)
-        ovs-install-ubuntu-latest
+        if [ "$OVS_VERSION" = "latest" ]; then
+            ovs-install-centos-latest
+        else
+            ovs-install-centos
+        fi
     ;;
 
     fedora|centos|redhat)
-        ovs-install-centos-latest
+        if [ "$OVS_VERSION" = "latest" ]; then
+            ovs-install-ubuntu-latest
+        else
+            ovs-install-ubuntu
+        fi
     ;;
 
     *)

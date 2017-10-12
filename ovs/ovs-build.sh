@@ -2,24 +2,26 @@
 # build openvswitch packages (rpm or deb).
 
 download-ovs() {
-  curl -o openvswitch-2.7.0.tar.gz http://openvswitch.org/releases/openvswitch-2.7.0.tar.gz
-  tar zxvf openvswitch-2.7.0.tar.gz
-  cd openvswitch-2.7.0
+  curl -o openvswitch-2.8.0.tar.gz http://openvswitch.org/releases/openvswitch-2.8.0.tar.gz
+  tar zxvf openvswitch-2.8.0.tar.gz
+  cd openvswitch-2.8.0
 }
 
 build-ubuntu() {
+  # install dependencies
   apt-get update
-  apt-get -y install build-essential fakeroot
+  apt-get -y install build-essential fakeroot module-assistant
   apt-get -y install graphviz autoconf automake bzip2 debhelper dh-autoreconf libssl-dev libtool openssl
   apt-get -y install procps python-all python-twisted-conch python-zopeinterface python-six
 
+  # build openvswitch binary
+  locale-gen zh_CN.UTF-8 en_US.UTF-8
   dpkg-checkbuilddeps
   DEB_BUILD_OPTIONS='parallel=8 nocheck' fakeroot debian/rules binary
 
   # build modules
   cd ..
-  apt-get -y install module-assistant
-  dpkg -i openvswitch-datapath-source_2.7.0-1_all.deb
+  dpkg -i openvswitch-datapath-source_2.8.0-1_all.deb
   m-a prepare
   m-a build openvswitch-datapath
   cp /usr/src/openvswitch-datapath-module-*.deb ./
