@@ -4,7 +4,7 @@ set -o nounset
 set -o pipefail
 
 CONTAINER_CIDR=${CONTAINER_CIDR:-"10.244.1.0/24"}
-CNI_VERSION=${CNI_VERSION:-"v0.6.0-rc1"}
+CNI_VERSION=${CNI_VERSION:-"v0.6.0"}
 
 install-flannel() {
     kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel-rbac.yml
@@ -12,7 +12,9 @@ install-flannel() {
 }
 
 install-calico() {
-    kubectl apply -f https://docs.projectcalico.org/v2.4/getting-started/kubernetes/installation/hosted/kubeadm/1.6/calico.yaml
+    curl -O -L https://docs.projectcalico.org/v2.4/getting-started/kubernetes/installation/hosted/kubeadm/1.6/calico.yaml
+    sed -i -e 's/192\.168/10.244/' calico.yaml
+    kubectl apply -f calico.yaml
 }
 
 install-weave() {
@@ -21,7 +23,7 @@ install-weave() {
 
 install-cni() {
     mkdir -p /etc/cni/net.d  /opt/cni/bin
-    curl -sSL https://github.com/containernetworking/cni/releases/download/${CNI_VERSION}/cni-amd64-${CNI_VERSION}.tgz -o cni.tgz
+    curl -sSL https://github.com/containernetworking/plugins/releases/download/${CNI_VERSION}/cni-plugins-amd64-${CNI_VERSION}.tgz -o cni.tgz
     tar zxvf cni.tgz -C /opt/cni/bin && rm -f cni.tgz
 }
 

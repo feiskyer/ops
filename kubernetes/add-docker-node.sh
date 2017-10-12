@@ -5,6 +5,7 @@ set -o pipefail
 
 CLUSTER_CIDR=${CLUSTER_CIDR:-"10.244.0.0/16"}
 CONTAINER_CIDR=${CONTAINER_CIDR:-"10.244.2.0/24"}
+NETWORK_PLUGIN=${NETWORK_PLUGIN:-"calico"}
 TOKEN=${TOKEN:-""}
 MASTER_IP=${MASTER_IP:-""}
 
@@ -15,6 +16,27 @@ source ${KUBERNTES_ROOT}/lib/kubernetes.sh
 source ${KUBERNTES_ROOT}/lib/cni.sh
 source ${KUBERNTES_ROOT}/lib/hyper.sh
 
+install-network-plugin() {
+    case "${NETWORK_PLUGIN}" in
+
+        bridge)
+            config-cni
+            ;;
+
+        calico)
+            install-calico
+            ;;
+
+        flannel)
+            install-flannel
+            ;;
+
+        *)
+            echo "No network plugin is running, please add it manually"
+            ;;
+    esac
+}
+
 install-packages() {
     lsb_dist=$(lsb-dist)
     case "$lsb_dist" in
@@ -22,13 +44,13 @@ install-packages() {
         ubuntu)
             install-docker-ubuntu
             install-kubelet-ubuntu
-            config-cni
+            install-network-plugin
         ;;
 
         fedora|centos|redhat)
             install-docker-centos
             install-kubelet-centos
-            config-cni
+            install-network-plugin
         ;;
 
         *)

@@ -36,6 +36,9 @@ EOF
 }
 
 setup-master() {
+    # Sometime /var/lib/kubelet is not empty after kubelet installation.
+    rm -rf /var/lib/kubelet
+    # Setup master
     kubeadm init --config ${KUBERNTES_LIB_ROOT}/kubeadm.yaml
     # create default host-path storage class
     # kubectl create -f ${KUBERNTES_LIB_ROOT}/storage-class.yaml
