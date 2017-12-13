@@ -44,6 +44,10 @@ export CONTAINER_CIDR="10.244.2.0/24"
 - Add a new node with docker runtime: `kubernetes/add-docker-node.sh`
 - Add a new node with frakti runtime: `kubernetes/add-hyper-node.sh`
 
+### Kubernetes manifest examples
+
+See [k8s-examples](k8s-examples/README.md).
+
 ## OVS
 
 - Install ovs: `ovs/ovs-install.sh`

@@ -1,0 +1,40 @@
+# Expose node's SSH to kubernetes service.
+# Note: node is selected randomly depending on scheduler.
+# A node selector or node name could be set if you want to ssh to specific nodes.
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: node-ssh
+  labels:
+    app: node-ssh
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-ssh
+  template:
+    metadata:
+      labels:
+        app: node-ssh
+    spec:
+      containers:
+      - name: alpine
+        image: alpine:latest
+        ports:
+        - containerPort: 22
+        command: ["/bin/sh", "-c", "--"]
+        args: ["while true; do sleep 30; done;"]
+      hostNetwork: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-ssh
+spec:
+  selector:
+    app: node-ssh
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 22
+    targetPort: 22

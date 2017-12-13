@@ -1,4 +1,6 @@
 #!/bin/bash
+# Evaluate pod creation process.
+# This is ususally used for evaluationg whether a cluster is configured properly.
 set -e
 
 create_pod() {
