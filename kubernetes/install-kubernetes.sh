@@ -32,6 +32,10 @@ install-network-plugin() {
             install-weave
             ;;
 
+        azure)
+            install-azure-vnet
+            ;;
+
         *)
             echo "No network plugin is running, please add it manually"
             ;;
