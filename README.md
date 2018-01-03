@@ -28,7 +28,6 @@ cd ops
 ### Create a kubernetes cluster master
 
 - Install kubernetes with docker: `kubernetes/install-kubernetes.sh`
-- Install kubernetes with frakti: `kubernetes/install-kubernetes-frakti.sh`
 
 ### Add a new node
 
@@ -42,7 +41,6 @@ export CONTAINER_CIDR="10.244.2.0/24"
 ```
 
 - Add a new node with docker runtime: `kubernetes/add-docker-node.sh`
-- Add a new node with frakti runtime: `kubernetes/add-hyper-node.sh`
 
 ### Kubernetes manifest examples
 
