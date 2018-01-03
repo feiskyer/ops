@@ -12,6 +12,5 @@ controllerManagerExtraArgs:
 apiServerExtraArgs:
   runtime-config: "api/all=true"
   feature-gates: "AllAlpha=true"
-  # experimental-keystone-url: "https://x.x.x.x:5000/v2.0"
 networking:
   podSubnet: "10.244.0.0/16"

@@ -28,6 +28,10 @@ install-network-plugin() {
             install-flannel
             ;;
 
+        weave)
+            install-weave
+            ;;
+
         *)
             echo "No network plugin is running, please add it manually"
             ;;

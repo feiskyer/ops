@@ -23,11 +23,15 @@ install-network-plugin() {
             ;;
 
         calico)
-            install-calico
+            echo "do nothing for calico."
             ;;
 
         flannel)
-            install-flannel
+            echo "do nothing for flannel."
+            ;;
+
+        weave)
+            echo "do nothing for weave."
             ;;
 
         *)
