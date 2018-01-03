@@ -31,16 +31,15 @@ cd ops
 
 ### Add a new node
 
-Setup token and CIDR first.
-
 ```sh
+# Setup token and CIDR first.
 # replace this with yours.
 export TOKEN="xxxx"
 export MASTER_IP="x.x.x.x"
 export CONTAINER_CIDR="10.244.2.0/24"
-```
 
-- Add a new node with docker runtime: `kubernetes/add-docker-node.sh`
+kubernetes/add-docker-node.sh
+```
 
 ### Kubernetes manifest examples
 
