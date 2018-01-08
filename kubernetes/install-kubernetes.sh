@@ -12,7 +12,6 @@ source ${KUBERNTES_ROOT}/lib/util.sh
 source ${KUBERNTES_ROOT}/lib/docker.sh
 source ${KUBERNTES_ROOT}/lib/kubernetes.sh
 source ${KUBERNTES_ROOT}/lib/cni.sh
-source ${KUBERNTES_ROOT}/lib/hyper.sh
 
 install-network-plugin() {
     case "${NETWORK_PLUGIN}" in
@@ -27,6 +26,14 @@ install-network-plugin() {
 
         flannel)
             install-flannel
+            ;;
+
+        weave)
+            install-weave
+            ;;
+
+        azure)
+            install-azure-vnet
             ;;
 
         *)

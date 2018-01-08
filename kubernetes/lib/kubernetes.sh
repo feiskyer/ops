@@ -69,6 +69,6 @@ setup-node() {
     fi
 
     # join master on worker nodes
-    kubeadm join --token $token ${master_ip}:$port
+    kubeadm join --ignore-preflight-errors all --discovery-token-unsafe-skip-ca-verification --token $token ${master_ip}:$port
 }
 

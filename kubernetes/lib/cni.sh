@@ -7,18 +7,28 @@ CONTAINER_CIDR=${CONTAINER_CIDR:-"10.244.1.0/24"}
 CNI_VERSION=${CNI_VERSION:-"v0.6.0"}
 
 install-flannel() {
-    kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel-rbac.yml
-    kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
+    kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+}
+
+install-azure-vnet() {
+    wget https://github.com/Azure/azure-container-networking/releases/download/v1.0.0/azure-vnet-cni-linux-amd64-v1.0.0.tgz
+    gunzip azure-vnet-cni-linux-amd64-v1.0.0.tgz
+    tar xvf azure-vnet-cni-linux-amd64-v1.0.0.tar
+    mkdir -p /opt/cni/bin/ /etc/cni/net.d/
+    mv azure-vnet azure-vnet-ipam /opt/cni/bin/
+    mv 10-azure.conf /etc/cni/net.d/
 }
 
 install-calico() {
-    curl -O -L https://docs.projectcalico.org/v2.4/getting-started/kubernetes/installation/hosted/kubeadm/1.6/calico.yaml
+    # kubectl apply -f https://docs.projectcalico.org/v3.0/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml
+    # curl -O -L https://docs.projectcalico.org/v3.0/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml
+    curl -O -L https://docs.projectcalico.org/v3.0/getting-started/kubernetes/installation/hosted/kubeadm/1.7/calico.yaml
     sed -i -e 's/192\.168/10.244/' calico.yaml
     kubectl apply -f calico.yaml
 }
 
 install-weave() {
-    kubectl apply -f https://cloud.weave.works/k8s/v1.7/net.yaml
+    kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 }
 
 install-cni() {

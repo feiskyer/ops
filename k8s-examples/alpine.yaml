@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpine
+  labels:
+    app: alpine
+spec:
+  restartPolicy: Always
+  containers:
+  - name: waiter
+    image: alpine
+    command: ["/bin/sh"]
