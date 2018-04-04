@@ -1,0 +1,39 @@
+# Replace <node-name> before creating resources.
+apiVersion: v1
+kind: Service
+metadata:
+  name: ssh-to-node
+spec:
+  selector:
+    app: ssh-to-node
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 22
+    targetPort: 22
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ssh-to-node
+  labels:
+    app: ssh-to-node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ssh-to-node
+  template:
+    metadata:
+      labels:
+        app: ssh-to-node
+    spec:
+      containers:
+      - name: alpine
+        image: alpine
+        ports:
+        - containerPort: 22
+        stdin: true
+        tty: true
+      hostNetwork: true
+      nodeName: <node-name>
