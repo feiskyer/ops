@@ -1,4 +1,5 @@
 # Ref https://github.com/kubernetes/kubernetes/blob/master/cmd/kubeadm/app/apis/kubeadm/v1alpha1/types.go#L27
+# https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/#config-file
 kind: MasterConfiguration
 apiVersion: kubeadm.k8s.io/v1alpha1
 kubernetesVersion: "stable"
