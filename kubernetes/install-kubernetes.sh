@@ -6,6 +6,7 @@ set -o pipefail
 CLUSTER_CIDR=${CLUSTER_CIDR:-"10.244.0.0/16"}
 CONTAINER_CIDR=${CONTAINER_CIDR:-"10.244.1.0/24"}
 NETWORK_PLUGIN=${NETWORK_PLUGIN:-"flannel"}
+USE_MIRROR=${USE_MIRROR:-""}
 
 KUBERNTES_ROOT=$(dirname "${BASH_SOURCE}")
 source ${KUBERNTES_ROOT}/lib/util.sh
@@ -47,14 +48,22 @@ case "$lsb_dist" in
 
     ubuntu)
         install-docker-ubuntu
-        install-kubelet-ubuntu
+        if [ "$USE_MIRROR" = "" ]; then
+            install-kubelet-ubuntu
+        else
+            install-kubelet-ubuntu-mirror
+        fi
         setup-master
         install-network-plugin
     ;;
 
     fedora|centos|redhat)
         install-docker-centos
-        install-kubelet-centos
+        if [ "$USE_MIRROR" = "" ]; then
+            install-kubelet-centos
+        else
+            install-kubelet-centos-mirror
+        fi
         setup-master
         install-network-plugin
     ;;
@@ -64,4 +73,3 @@ case "$lsb_dist" in
     ;;
 
 esac
-

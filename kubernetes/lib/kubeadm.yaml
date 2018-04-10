@@ -4,6 +4,7 @@ kind: MasterConfiguration
 apiVersion: kubeadm.k8s.io/v1alpha1
 kubernetesVersion: "stable"
 apiServerCertSANs: []
+imageRepository: ""
 controllerManagerExtraArgs:
   horizontal-pod-autoscaler-use-rest-clients: "true"
   horizontal-pod-autoscaler-sync-period: "10s"

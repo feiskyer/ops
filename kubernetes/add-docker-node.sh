@@ -8,6 +8,7 @@ CONTAINER_CIDR=${CONTAINER_CIDR:-"10.244.2.0/24"}
 NETWORK_PLUGIN=${NETWORK_PLUGIN:-"calico"}
 TOKEN=${TOKEN:-""}
 MASTER_IP=${MASTER_IP:-""}
+USE_MIRROR=${USE_MIRROR:-""}
 
 KUBERNTES_ROOT=$(dirname "${BASH_SOURCE}")
 source ${KUBERNTES_ROOT}/lib/util.sh
@@ -50,13 +51,21 @@ install-packages() {
 
         ubuntu)
             install-docker-ubuntu
-            install-kubelet-ubuntu
+            if [ "$USE_MIRROR" = "" ]; then
+                install-kubelet-ubuntu
+            else
+                install-kubelet-ubuntu-mirror
+            fi
             install-network-plugin
         ;;
 
         fedora|centos|redhat)
             install-docker-centos
-            install-kubelet-centos
+            if [ "$USE_MIRROR" = "" ]; then
+                install-kubelet-centos
+            else
+                install-kubelet-centos-mirror
+            fi
             install-network-plugin
         ;;
 

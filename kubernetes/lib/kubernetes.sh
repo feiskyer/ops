@@ -7,6 +7,14 @@ CLUSTER_CIDR=${CLUSTER_CIDR:-"10.244.0.0/16"}
 CONTAINER_CIDR=${CONTAINER_CIDR:-"10.244.1.0/24"}
 KUBERNTES_LIB_ROOT=$(dirname "${BASH_SOURCE}")
 
+setup-kubelet-infra-container-image() {
+    cat > /etc/systemd/system/kubelet.service.d/20-pod-infra-image.conf <<EOF
+[Service]
+Environment="KUBELET_EXTRA_ARGS=--pod-infra-container-image=k8s-gcrio.azureedge.net/pause-amd64:3.1"
+EOF
+    systemctl daemon-reload
+}
+
 install-kubelet-centos() {
     cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
@@ -20,8 +28,23 @@ gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
 EOF
     setenforce 0
     sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
-    # kubernetes-cni will be installed automatically with kubelet
     yum install -y kubernetes-cni kubelet kubeadm kubectl
+}
+
+install-kubelet-centos-mirror() {
+    cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+EOF
+    setenforce 0
+    sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+    yum install -y kubernetes-cni kubelet kubeadm kubectl
+    setup-kubelet-infra-container-image
 }
 
 install-kubelet-ubuntu() {
@@ -35,6 +58,17 @@ EOF
     apt-get install -y kubernetes-cni kubelet kubeadm kubectl
 }
 
+install-kubelet-ubuntu-mirror() {
+    apt-get update && apt-get install -y apt-transport-https
+    curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add -
+    cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
+EOF
+    apt-get update
+    apt-get install -y kubernetes-cni kubelet kubeadm kubectl
+    setup-kubelet-infra-container-image
+}
+
 config-kubelet-containerd() {
 	echo -e '[Service]\nEnvironment="KUBELET_EXTRA_ARGS=--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=/var/run/cri-containerd.sock"\n' | sudo tee /etc/systemd/system/kubelet.service.d/0-cri-containerd.conf
 	sudo systemctl daemon-reload
@@ -43,6 +77,10 @@ config-kubelet-containerd() {
 setup-master() {
     # Sometime /var/lib/kubelet is not empty after kubelet installation.
     rm -rf /var/lib/kubelet
+    # Setup mirror
+    if [ ! -z "$USE_MIRROR" ]; then
+        sed -i 's/imageRepository: ""/imageRepository: k8s-gcrio.azureedge.net/' ${KUBERNTES_LIB_ROOT}/kubeadm.yaml
+    fi
     # Setup master
     kubeadm init --config ${KUBERNTES_LIB_ROOT}/kubeadm.yaml --ignore-preflight-errors all
     # create default host-path storage class
@@ -76,4 +114,3 @@ setup-node() {
     # join master on worker nodes
     kubeadm join --ignore-preflight-errors all --discovery-token-unsafe-skip-ca-verification --token $token ${master_ip}:$port
 }
-
