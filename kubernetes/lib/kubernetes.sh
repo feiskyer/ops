@@ -10,7 +10,7 @@ KUBERNTES_LIB_ROOT=$(dirname "${BASH_SOURCE}")
 setup-kubelet-infra-container-image() {
     cat > /etc/systemd/system/kubelet.service.d/20-pod-infra-image.conf <<EOF
 [Service]
-Environment="KUBELET_EXTRA_ARGS=--pod-infra-container-image=k8s-gcrio.azureedge.net/pause-amd64:3.1"
+Environment="KUBELET_EXTRA_ARGS=--pod-infra-container-image=crproxy.trafficmanager.net:6000/google_containers/pause-amd64:3.1"
 EOF
     systemctl daemon-reload
 }
@@ -79,7 +79,7 @@ setup-master() {
     rm -rf /var/lib/kubelet
     # Setup mirror
     if [ ! -z "$USE_MIRROR" ]; then
-        sed -i 's/imageRepository: ""/imageRepository: k8s-gcrio.azureedge.net/' ${KUBERNTES_LIB_ROOT}/kubeadm.yaml
+        sed -i 's/imageRepository: ""/imageRepository: crproxy.trafficmanager.net:6000\/google_containers/' ${KUBERNTES_LIB_ROOT}/kubeadm.yaml
     fi
     # Setup master
     kubeadm init --config ${KUBERNTES_LIB_ROOT}/kubeadm.yaml --ignore-preflight-errors all
