@@ -137,21 +137,6 @@ EOF
     systemctl start frakti
 }
 
-config-kubelet-frakti() {
-    sed -i '2 i\Environment="KUBELET_EXTRA_ARGS=--container-runtime=remote --container-runtime-endpoint=/var/run/frakti.sock --feature-gates=AllAlpha=true"' /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
-    systemctl daemon-reload
-}
-
-
-kubelet_config_docker() {
-    if [ -f /etc/systemd/system/kubelet.service.d/10-kubeadm.conf ]; then
-        sed -i '/frakti/d' /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
-        systemctl daemon-reload
-    else
-        echo "Kubelet is not managed by kubeadm"
-    fi
-}
-
 check_hyperd() {
     which hyperd>/dev/null
     if [[ $? != 0 ]]; then
@@ -205,7 +190,7 @@ build-hyper-deb() {
     git clone https://github.com/hyperhq/hyperd $GOPATH/src/github.com/hyperhq/hyperd
     git clone https://github.com/hyperhq/hyperstart $GOPATH/src/github.com/hyperhq/hyperstart
     cd $GOPATH/src/github.com/hyperhq/hyperd/package/ubuntu
-    apt-get install -y qemu autoconf automake pkg-config libdevmapper-dev libsqlite3-dev aufs-tools wget libaio1 libpixman-1-0 dpkg-dev dh-make debhelper libvirt-dev 
+    apt-get install -y qemu autoconf automake pkg-config libdevmapper-dev libsqlite3-dev aufs-tools wget libaio1 libpixman-1-0 dpkg-dev dh-make debhelper libvirt-dev
     ./make-deb.sh
 }
 

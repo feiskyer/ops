@@ -1,6 +1,6 @@
 # Devops
 
-[![Build Status](https://travis-ci.org/feiskyer/ops.svg?branch=master)](https://travis-ci.org/feiskyer/ops) 
+[![Build Status](https://travis-ci.org/feiskyer/ops.svg?branch=master)](https://travis-ci.org/feiskyer/ops)
 
 Tools&scripts for devops.
 
@@ -18,20 +18,18 @@ git clone https://github.com/feiskyer/ops.git
 cd ops
 ```
 
-## Docker
-
-- Install docker v1.13: `kubernetes/install-docker.sh`
-- Install docker latest: `export DOCKER_VERSION="latest" && kubernetes/install-docker.sh`
-
 ## Kubernetes
 
 ### Create a kubernetes cluster master
 
-- Install kubernetes with docker: 
+- Install kubernetes with docker:
 
 ```sh
+# For Chinese users, enable mirror.
 export USE_MIRROR=true
-kubernetes/install-kubernetes.sh`
+
+# Setup kubernetes master.
+kubernetes/install-kubernetes.sh
 ```
 
 ### Add a new node
@@ -43,13 +41,35 @@ export TOKEN="xxxx"
 export MASTER_IP="x.x.x.x"
 export CONTAINER_CIDR="10.244.2.0/24"
 
+# For Chinese users, enable mirror.
 export USE_MIRROR=true
-kubernetes/add-docker-node.sh
+
+# Setup and join the new node.
+kubernetes/add-node.sh
 ```
+
+### Customize
+
+- Container runtime: `export CONTAINER_RUNTIME="docker"`. Supported options:
+  - docker
+  - containerd
+- CNI network plugins: `export NETWORK_PLUGIN="flannel"`. Supported options:
+  - flannel
+  - calico
+  - weave
+  - azure
+  - bridge
+- Cluster CIDR: `export CLUSTER_CIDR="10.244.0.0/16"`
+- Container CIDR: `export CONTAINER_CIDR="10.244.1.0/24"`. Only required for bridge network plugin.
 
 ### Kubernetes manifest examples
 
 See [k8s-examples](k8s-examples/README.md).
+
+## Docker
+
+- Install docker v1.13: `kubernetes/install-docker.sh`
+- Install docker latest: `export DOCKER_VERSION="latest" && kubernetes/install-docker.sh`
 
 ## OVS
 

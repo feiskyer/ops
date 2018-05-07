@@ -5,7 +5,14 @@ set -o pipefail
 
 CLUSTER_CIDR=${CLUSTER_CIDR:-"10.244.0.0/16"}
 CONTAINER_CIDR=${CONTAINER_CIDR:-"10.244.1.0/24"}
+CONTAINER_RUNTIME=${CONTAINER_RUNTIME:-"docker"}
 KUBERNTES_LIB_ROOT=$(dirname "${BASH_SOURCE}")
+
+KUBERNTES_LIB_ROOT=$(dirname "${BASH_SOURCE}")
+source ${KUBERNTES_LIB_ROOT}/containerd.sh
+source ${KUBERNTES_LIB_ROOT}/hyper.sh
+source ${KUBERNTES_ROOT}/util.sh
+source ${KUBERNTES_ROOT}/docker.sh
 
 setup-kubelet-infra-container-image() {
     cat > /etc/systemd/system/kubelet.service.d/20-pod-infra-image.conf <<EOF
@@ -69,9 +76,39 @@ EOF
     setup-kubelet-infra-container-image
 }
 
-config-kubelet-containerd() {
-	echo -e '[Service]\nEnvironment="KUBELET_EXTRA_ARGS=--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=/var/run/cri-containerd.sock"\n' | sudo tee /etc/systemd/system/kubelet.service.d/0-cri-containerd.conf
-	sudo systemctl daemon-reload
+setup-container-runtime() {
+    lsb_dist=$(lsb-dist)
+
+    case "${CONTAINER_RUNTIME}" in
+
+        docker)
+            if [ "$lsb_dist" = "ubuntu" ]; then
+                install-docker-ubuntu
+            else
+                install-docker-centos
+            fi
+            rm -f /etc/systemd/system/kubelet.service.d/0-container-runtime.conf
+            ;;
+
+        containerd)
+            install-containerd
+            cat <<EOF >/etc/systemd/system/kubelet.service.d/0-container-runtime.conf
+[Service]
+Environment="KUBELET_EXTRA_ARGS=--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=unix:///run/containerd/containerd.sock"
+EOF
+            ;;
+
+        frakti)
+            cat <<EOF >/etc/systemd/system/kubelet.service.d/0-container-runtime.conf
+[Service]
+Environment="KUBELET_EXTRA_ARGS=--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=unix:///var/run/frakti.sock"
+EOF
+
+        *)
+            echo "Container runtime ${CONTAINER_RUNTIME} not supported"
+            exit 1
+            ;;
+    esac
 }
 
 setup-master() {

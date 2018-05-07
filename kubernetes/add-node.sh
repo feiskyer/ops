@@ -12,7 +12,6 @@ USE_MIRROR=${USE_MIRROR:-""}
 
 KUBERNTES_ROOT=$(dirname "${BASH_SOURCE}")
 source ${KUBERNTES_ROOT}/lib/util.sh
-source ${KUBERNTES_ROOT}/lib/docker.sh
 source ${KUBERNTES_ROOT}/lib/kubernetes.sh
 source ${KUBERNTES_ROOT}/lib/cni.sh
 
@@ -50,7 +49,7 @@ install-packages() {
     case "$lsb_dist" in
 
         ubuntu)
-            install-docker-ubuntu
+            setup-container-runtime
             if [ "$USE_MIRROR" = "" ]; then
                 install-kubelet-ubuntu
             else
@@ -60,7 +59,7 @@ install-packages() {
         ;;
 
         fedora|centos|redhat)
-            install-docker-centos
+            setup-container-runtime
             if [ "$USE_MIRROR" = "" ]; then
                 install-kubelet-centos
             else
