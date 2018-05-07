@@ -11,8 +11,8 @@ KUBERNTES_LIB_ROOT=$(dirname "${BASH_SOURCE}")
 KUBERNTES_LIB_ROOT=$(dirname "${BASH_SOURCE}")
 source ${KUBERNTES_LIB_ROOT}/containerd.sh
 source ${KUBERNTES_LIB_ROOT}/hyper.sh
-source ${KUBERNTES_ROOT}/util.sh
-source ${KUBERNTES_ROOT}/docker.sh
+source ${KUBERNTES_LIB_ROOT}/util.sh
+source ${KUBERNTES_LIB_ROOT}/docker.sh
 
 setup-kubelet-infra-container-image() {
     cat > /etc/systemd/system/kubelet.service.d/20-pod-infra-image.conf <<EOF
