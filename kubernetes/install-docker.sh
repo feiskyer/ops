@@ -9,11 +9,6 @@ KUBERNTES_ROOT=$(dirname "${BASH_SOURCE}")
 source ${KUBERNTES_ROOT}/lib/util.sh
 source ${KUBERNTES_ROOT}/lib/docker.sh
 
-docker-install-latest() {
-    curl -fsSL https://get.docker.com/ | sh
-    systemctl start docker
-}
-
 if [ "$DOCKER_VERSION" = "latest" ]; then
     docker-install-latest
     exit 0

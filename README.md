@@ -25,11 +25,8 @@ cd ops
 - Install kubernetes with docker:
 
 ```sh
-# For Chinese users, enable mirror.
-export USE_MIRROR=true
-
 # Setup kubernetes master.
-kubernetes/install-kubernetes.sh
+./kubernetes/install-kubernetes.sh
 ```
 
 ### Add a new node
@@ -41,18 +38,18 @@ export TOKEN="xxxx"
 export MASTER_IP="x.x.x.x"
 export CONTAINER_CIDR="10.244.2.0/24"
 
-# For Chinese users, enable mirror.
-export USE_MIRROR=true
-
 # Setup and join the new node.
-kubernetes/add-node.sh
+./kubernetes/add-node.sh
 ```
 
 ### Customize
 
+- Use mirrors in China: `export USE_MIRROR=true`. Only required for Chinese users.
 - Container runtime: `export CONTAINER_RUNTIME="docker"`. Supported options:
   - docker
   - containerd
+  - cri-o
+  - gvisor
 - CNI network plugins: `export NETWORK_PLUGIN="flannel"`. Supported options:
   - flannel
   - calico
@@ -68,14 +65,14 @@ See [k8s-examples](k8s-examples/README.md).
 
 ## Docker
 
-- Install docker v1.13: `kubernetes/install-docker.sh`
-- Install docker latest: `export DOCKER_VERSION="latest" && kubernetes/install-docker.sh`
+- Install docker v1.13: `./kubernetes/install-docker.sh`
+- Install docker latest: `export DOCKER_VERSION="latest" && ./kubernetes/install-docker.sh`
 
 ## OVS
 
-- Install ovs: `ovs/ovs-install.sh`
-- Start ovn: `ovs/ovn-start.sh`
+- Install ovs: `./ovs/ovs-install.sh`
+- Start ovn: `./ovs/ovn-start.sh`
 
 ## Misc
 
-- Install golang: `misc/golang-install.sh`
+- Install golang: `./misc/golang-install.sh`

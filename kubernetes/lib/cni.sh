@@ -72,6 +72,7 @@ install-cni-src() {
     cd $GOPATH/src/github.com/containernetworking/plugins
     ./build.sh
     cp bin/* /opt/cni/bin/
+    cd -
 }
 
 config-cni() {

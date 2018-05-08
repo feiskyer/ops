@@ -3,6 +3,12 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+docker-install-latest() {
+    curl -fsSL https://get.docker.com/ | sh
+    systemctl start docker
+    iptables -P FORWARD ACCEPT
+}
+
 install-docker-ubuntu() {
     apt-get update
     apt-get install -y docker.io

@@ -6,13 +6,13 @@ set -o pipefail
 CLUSTER_CIDR=${CLUSTER_CIDR:-"10.244.0.0/16"}
 CONTAINER_CIDR=${CONTAINER_CIDR:-"10.244.1.0/24"}
 CONTAINER_RUNTIME=${CONTAINER_RUNTIME:-"docker"}
-KUBERNTES_LIB_ROOT=$(dirname "${BASH_SOURCE}")
 
 KUBERNTES_LIB_ROOT=$(dirname "${BASH_SOURCE}")
 source ${KUBERNTES_LIB_ROOT}/containerd.sh
 source ${KUBERNTES_LIB_ROOT}/hyper.sh
 source ${KUBERNTES_LIB_ROOT}/util.sh
 source ${KUBERNTES_LIB_ROOT}/docker.sh
+source ${KUBERNTES_LIB_ROOT}/gvisor.sh
 
 setup-kubelet-infra-container-image() {
     cat > /etc/systemd/system/kubelet.service.d/20-pod-infra-image.conf <<EOF
@@ -87,28 +87,51 @@ setup-container-runtime() {
             else
                 install-docker-centos
             fi
-            rm -f /etc/systemd/system/kubelet.service.d/0-container-runtime.conf
+            rm -f /etc/systemd/system/kubelet.service.d/11-container-runtime.conf
             ;;
 
         containerd)
             install-containerd
-            cat <<EOF >/etc/systemd/system/kubelet.service.d/0-container-runtime.conf
+            cat <<EOF >/etc/systemd/system/kubelet.service.d/11-container-runtime.conf
 [Service]
 Environment="KUBELET_EXTRA_ARGS=--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=unix:///run/containerd/containerd.sock"
 EOF
             ;;
 
+        cri-o)
+            #docker-install-latest
+            install-crio
+            cat <<EOF >/etc/systemd/system/kubelet.service.d/11-container-runtime.conf
+[Service]
+Environment="KUBELET_EXTRA_ARGS=--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=unix:///var/run/crio/crio.sock"
+EOF
+            ;;
+
+        gvisor)
+            #docker-install-latest
+            install-crio
+            install-gvisor
+            sed -i 's/runtime_untrusted_workload = ""/runtime_untrusted_workload = "/usr/local/bin/runsc"/g' /etc/crio/crio.conf
+            cat <<EOF >/etc/systemd/system/kubelet.service.d/11-container-runtime.conf
+[Service]
+Environment="KUBELET_EXTRA_ARGS=--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=unix:///var/run/crio/crio.sock"
+EOF
+            ;;
+
         frakti)
-            cat <<EOF >/etc/systemd/system/kubelet.service.d/0-container-runtime.conf
+            cat <<EOF >/etc/systemd/system/kubelet.service.d/11-container-runtime.conf
 [Service]
 Environment="KUBELET_EXTRA_ARGS=--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=unix:///var/run/frakti.sock"
 EOF
+            ;;
 
         *)
             echo "Container runtime ${CONTAINER_RUNTIME} not supported"
             exit 1
             ;;
     esac
+
+    systemctl daemon-reload
 }
 
 setup-master() {
