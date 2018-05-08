@@ -111,7 +111,7 @@ EOF
             #docker-install-latest
             install-crio
             install-gvisor
-            sed -i 's/runtime_untrusted_workload = ""/runtime_untrusted_workload = "/usr/local/bin/runsc"/g' /etc/crio/crio.conf
+            sed -i 's/runtime_untrusted_workload = ""/runtime_untrusted_workload = "\/usr\/local\/bin\/runsc"/g' /etc/crio/crio.conf
             cat <<EOF >/etc/systemd/system/kubelet.service.d/11-container-runtime.conf
 [Service]
 Environment="KUBELET_EXTRA_ARGS=--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=unix:///var/run/crio/crio.sock"
