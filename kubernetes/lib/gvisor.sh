@@ -62,7 +62,8 @@ EOF
     systemctl restart crio
 }
 
-install-gvisor() {
+# Install gvisor from source code.
+install-gvisor-src() {
     # Install Go
     install-go
 
@@ -81,3 +82,11 @@ install-gvisor() {
     cp -f ./bazel-bin/runsc/linux_amd64_pure_stripped/runsc /usr/local/bin
     cd -
 }
+
+# Install gvisor from nightly build.
+install-gvisor() {
+    wget https://storage.googleapis.com/gvisor/releases/nightly/latest/runsc
+    chmod +x runsc
+    mv runsc /usr/local/bin
+}
+
