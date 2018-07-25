@@ -1,6 +1,6 @@
 #!/bin/sh
-GOVERSION=1.10.2
-curl -sL https://storage.googleapis.com/golang/go$GOVERSION.linux-amd64.tar.gz | tar -C /usr/local -zxf -
+GOVERSION=1.10.3
+curl -sL https://storage.googleapis.com/golang/go$GOVERSION.linux-amd64.tar.gz | sudo tar -C /usr/local -zxf -
 
 echo 'export GOPATH=/go' >> ~/.bashrc
 echo 'export PATH=$PATH:/usr/local/go/bin/:$GOPATH/bin' >> ~/.bashrc
