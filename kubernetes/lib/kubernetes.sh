@@ -94,7 +94,7 @@ setup-container-runtime() {
             install-containerd
             cat <<EOF >/etc/systemd/system/kubelet.service.d/11-container-runtime.conf
 [Service]
-Environment="KUBELET_EXTRA_ARGS=--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=unix:///run/containerd/containerd.sock"
+Environment="KUBELET_EXTRA_ARGS=--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=unix:///var/run/containerd/containerd.sock"
 EOF
             ;;
 
