@@ -14,7 +14,7 @@ install-containerd() {
     mv runc.amd64 /usr/local/bin/runc
     tar -C /usr/local -xzf containerd-${CONTAINERD_VERSION}.linux-amd64.tar.gz
 
-    mkdir /etc/containerd
+    mkdir -p /etc/containerd
     cat << EOF | sudo tee /etc/containerd/config.toml
 subreaper = true
 oom_score = -999
