@@ -36,14 +36,14 @@ $ kubectl -n rook get pod rook-client -w
 NAME          READY     STATUS    RESTARTS   AGE
 rook-client   1/1       Running   0          1m
 $ kubectl -n rook exec -it rook-client sh
-/ # 
+/ #
 / # rook status
 OVERALL STATUS: WARNING
 
 SUMMARY:
 SEVERITY   MESSAGE
 WARNING    too many PGs per OSD (2048 > max 300)
-WARNING    Monitor clock skew detected 
+WARNING    Monitor clock skew detected
 
 USAGE:
 TOTAL       USED       DATA      AVAILABLE
@@ -115,20 +115,4 @@ s3cmd put /tmp/rookObj --no-ssl --host=${AWS_ENDPOINT} --host-bucket=  s3://rook
 # Download and verify the file from the bucket
 s3cmd get s3://rookbucket/rookObj /tmp/rookObj-download --no-ssl --host=${AWS_ENDPOINT} --host-bucket=
 cat /tmp/rookObj-download
-```
-
-
-## Special notes for frakti
-
-Because frakti creates pod in hyperVM, which requires setting cpu/memory limits. Or else, it will create hyperVM with 1vcpu and 64MB memory. But 64MB is not sufficient for rook.io components, so we need to set the default memory larger, e.g: 
-
-```sh
-# deploy kubernetes with frakti
-$ curl -sSL https://github.com/kubernetes/frakti/raw/master/cluster/allinone.sh | bash
-
-# change default memory to 256MB, add --memory=256 at the end
-$ grep ExecStart /lib/systemd/system/frakti.service
-ExecStart=/usr/bin/frakti --v=3 --log-dir=/var/log/frakti --logtostderr=false --cgroup-driver=cgroupfs --listen=/var/run/frakti.sock --streaming-server-addr=%H --hyper-endpoint=127.0.0.1:22318 --memory=256
-$ systemctl daemon-reload
-$ systemctl restart frakti
 ```

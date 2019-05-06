@@ -35,12 +35,6 @@ install-cni() {
     tar zxvf cni.tgz -C /opt/cni/bin && rm -f cni.tgz
 }
 
-install-cni-frakti() {
-    mkdir -p /etc/cni/net.d  /opt/cni/bin
-    curl -sSL https://github.com/kubernetes/frakti/releases/download/v1.0/cni-amd64-v0.6.0-rc1.tgz -o cni.tgz
-    tar zxvf cni.tgz -C /opt/cni/bin && rm -f cni.tgz
-}
-
 cni_install_ubuntu() {
     apt-get install -y apt-transport-https
     curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -

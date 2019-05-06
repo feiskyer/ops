@@ -9,7 +9,6 @@ CONTAINER_RUNTIME=${CONTAINER_RUNTIME:-"docker"}
 
 KUBERNTES_LIB_ROOT=$(dirname "${BASH_SOURCE}")
 source ${KUBERNTES_LIB_ROOT}/containerd.sh
-source ${KUBERNTES_LIB_ROOT}/hyper.sh
 source ${KUBERNTES_LIB_ROOT}/util.sh
 source ${KUBERNTES_LIB_ROOT}/docker.sh
 source ${KUBERNTES_LIB_ROOT}/gvisor.sh
@@ -115,13 +114,6 @@ EOF
             cat <<EOF >/etc/systemd/system/kubelet.service.d/11-container-runtime.conf
 [Service]
 Environment="KUBELET_EXTRA_ARGS=--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=unix:///var/run/crio/crio.sock"
-EOF
-            ;;
-
-        frakti)
-            cat <<EOF >/etc/systemd/system/kubelet.service.d/11-container-runtime.conf
-[Service]
-Environment="KUBELET_EXTRA_ARGS=--container-runtime=remote --runtime-request-timeout=15m --container-runtime-endpoint=unix:///var/run/frakti.sock"
 EOF
             ;;
 
