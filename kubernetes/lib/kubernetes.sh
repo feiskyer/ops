@@ -152,7 +152,11 @@ setup-master() {
 
 setup-node() {
     if [[ $# < 2 ]]; then
-        echo "Usage: setup-node token master_ip [port]"
+        echo "Usage: setup-node token hash master_ip [port]"
+        echo ""
+        echo "  token could be get by running \"kubeadm token list\" or \"kubeadm token create\""
+        echo "  hash could be get by running \"openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | \
+   openssl dgst -sha256 -hex | sed 's/^.* //'\""
         exit 1
     fi
 
