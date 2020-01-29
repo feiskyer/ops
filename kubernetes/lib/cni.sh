@@ -5,6 +5,7 @@ set -o pipefail
 
 CONTAINER_CIDR=${CONTAINER_CIDR:-"10.244.1.0/24"}
 CNI_VERSION=${CNI_VERSION:-"v0.6.0"}
+USE_MIRROR=${USE_MIRROR:-""}
 
 install-flannel() {
     kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
@@ -21,7 +22,10 @@ install-azure-vnet() {
 
 install-calico() {
     curl -sSL https://docs.projectcalico.org/v3.11/manifests/calico.yaml -o /tmp/calico.yaml
-    sed -i -e 's/192\.168/10.244/' /tmp/calico.yaml
+    sed -i -e 's/192\.168/10.244/g' /tmp/calico.yaml
+    if [ ! -z "$USE_MIRROR" ]; then
+        sed -i -e 's/image: calico/image: dockerhub.azk8s.cn\/calico/g' /tmp/calico.yaml
+    fi
     kubectl apply -f /tmp/calico.yaml
 }
 
