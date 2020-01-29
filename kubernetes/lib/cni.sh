@@ -20,9 +20,9 @@ install-azure-vnet() {
 }
 
 install-calico() {
-    curl -O -L https://docs.projectcalico.org/v3.0/getting-started/kubernetes/installation/hosted/kubeadm/1.7/calico.yaml
-    sed -i -e 's/192\.168/10.244/' calico.yaml
-    kubectl apply -f calico.yaml
+    curl -sSL https://docs.projectcalico.org/v3.11/manifests/calico.yaml -o /tmp/calico.yaml
+    sed -i -e 's/192\.168/10.244/' /tmp/calico.yaml
+    kubectl apply -f /tmp/calico.yaml
 }
 
 install-weave() {

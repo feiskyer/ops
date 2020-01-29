@@ -3,7 +3,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-DOCKER_VERSION=${DOCKER_VERSION:-"v1.13"}
+DOCKER_VERSION=${DOCKER_VERSION:-"latest"}
 
 KUBERNTES_ROOT=$(dirname "${BASH_SOURCE}")
 source ${KUBERNTES_ROOT}/lib/util.sh

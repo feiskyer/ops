@@ -3,6 +3,8 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+USE_MIRROR=${USE_MIRROR:-""}
+
 docker-install-latest() {
     curl -fsSL https://get.docker.com/ | sh
     systemctl start docker
@@ -17,7 +19,13 @@ install-docker-ubuntu() {
 }
 
 install-docker-centos() {
-    yum install -y docker
+    yum install -y yum-utils device-mapper-persistent-data lvm2
+    if [ "$USE_MIRROR" = "" ]; then
+        yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    else
+        yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+    fi
+    yum install -y docker-ce docker-ce-cli containerd.io
     systemctl enable docker
     systemctl start docker
 }
