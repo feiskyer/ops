@@ -1,26 +1,41 @@
-# https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1beta1
-# https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/#config-file
-apiVersion: kubeadm.k8s.io/v1beta1
-kind: ClusterConfiguration
-networking:
-  serviceSubnet: "10.96.0.0/12"
-  podSubnet: "10.244.0.0/16"
-  dnsDomain: "cluster.local"
-kubernetesVersion: "stable"
-# controlPlaneEndpoint: "10.100.0.1:6443"
+apiVersion: kubeadm.k8s.io/v1beta2
+bootstrapTokens:
+- groups:
+  - system:bootstrappers:kubeadm:default-node-token
+  token: 862ecx.oxuwbcnaeniha01d
+  ttl: 24h0m0s
+  usages:
+  - signing
+  - authentication
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: 10.0.1.4
+  bindPort: 6443
+nodeRegistration:
+  criSocket: /var/run/dockershim.sock
+  name: myvm
+  taints:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+---
 apiServer:
   extraArgs:
-    authorization-mode: "Node,RBAC"
+    authorization-mode: Node,RBAC
   timeoutForControlPlane: 4m0s
-certificatesDir: "/etc/kubernetes/pki"
-imageRepository: "k8s.gcr.io"
+apiVersion: kubeadm.k8s.io/v1beta2
+certificatesDir: /etc/kubernetes/pki
+clusterName: kubernetes
+controllerManager: {}
+dns:
+  type: CoreDNS
+etcd:
+  local:
+    dataDir: /var/lib/etcd
+imageRepository: k8s.gcr.io
+kind: ClusterConfiguration
+networking:
+  dnsDomain: cluster.local
+  podSubnet: 10.244.0.0/16
+  serviceSubnet: 10.96.0.0/12
+scheduler: {}
 useHyperKubeImage: true
-clusterName: "kubernetes"
----
-apiVersion: kubelet.config.k8s.io/v1beta1
-kind: KubeletConfiguration
-# kubelet specific options here
----
-apiVersion: kubeproxy.config.k8s.io/v1alpha1
-kind: KubeProxyConfiguration
-# kube-proxy specific options here

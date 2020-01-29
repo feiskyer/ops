@@ -15,11 +15,13 @@ source ${KUBERNTES_LIB_ROOT}/docker.sh
 source ${KUBERNTES_LIB_ROOT}/gvisor.sh
 
 setup-kubelet-infra-container-image() {
+    mkdir -p /etc/systemd/system/kubelet.service.d
     cat > /etc/systemd/system/kubelet.service.d/20-pod-infra-image.conf <<EOF
 [Service]
-Environment="KUBELET_EXTRA_ARGS=--pod-infra-container-image=crproxy.trafficmanager.net:6000/google_containers/pause-amd64:3.1"
+Environment="KUBELET_EXTRA_ARGS=--pod-infra-container-image=gcr.azk8s.cn/google_containers/pause:3.1"
 EOF
     systemctl daemon-reload
+    systemctl restart kubelet
 }
 
 install-kubelet-centos() {
@@ -124,6 +126,8 @@ EOF
             ;;
     esac
 
+    sysctl -w net.bridge.bridge-nf-call-iptables=1
+    swapoff -a
     systemctl daemon-reload
 }
 
@@ -132,7 +136,7 @@ setup-master() {
     rm -rf /var/lib/kubelet
     # Setup mirror
     if [ ! -z "$USE_MIRROR" ]; then
-        sed -i 's/imageRepository: ""/imageRepository: crproxy.trafficmanager.net:6000\/google_containers/' ${KUBERNTES_LIB_ROOT}/kubeadm.yaml
+        sed -i 's/imageRepository: k8s.gcr.io/imageRepository: gcr.azk8s.cn\/google_containers/' ${KUBERNTES_LIB_ROOT}/kubeadm.yaml
     fi
     # Setup master
     kubeadm init --config ${KUBERNTES_LIB_ROOT}/kubeadm.yaml --ignore-preflight-errors all

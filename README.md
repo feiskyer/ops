@@ -65,8 +65,9 @@ See [k8s-examples](k8s-examples/README.md).
 
 ## Docker
 
-- Install docker v1.13: `./kubernetes/install-docker.sh`
-- Install docker latest: `export DOCKER_VERSION="latest" && ./kubernetes/install-docker.sh`
+```sh
+./kubernetes/install-docker.sh
+```
 
 ## OVS
 
