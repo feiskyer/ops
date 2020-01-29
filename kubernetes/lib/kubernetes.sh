@@ -135,12 +135,12 @@ setup-master() {
     # Sometime /var/lib/kubelet is not empty after kubelet installation.
     rm -rf /var/lib/kubelet
     # Setup mirror
-    imageRepository="gcr.azk8s.cn"
+    image_repository="k8s.gcr.io"
     if [ ! -z "$USE_MIRROR" ]; then
-        imageRepository="gcr.azk8s.cn/google_containers"
+        image_repository="gcr.azk8s.cn/google_containers"
     fi
     # Setup master
-    kubeadm init --image-repository gcr.azk8s.cn/google_containers \
+    kubeadm init --image-repository ${image_repository} \
         --pod-network-cidr ${CLUSTER_CIDR} \
         --ignore-preflight-errors all
     # create default host-path storage class
