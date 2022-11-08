@@ -14,7 +14,7 @@ Tools&scripts for devops.
 ## Get the scripts
 
 ```sh
-git clone https://github.com/feiskyer/ops.git
+git clone https://github.com/feiskyer/ops.git --recurse-submodules
 cd ops
 ```
 
@@ -26,7 +26,7 @@ cd ops
 
 ```sh
 # Setup kubernetes master.
-./kubernetes/install-kubernetes.sh
+sudo ./kubernetes/install-kubernetes.sh
 ```
 
 ### Add a new node
@@ -39,7 +39,7 @@ export MASTER_IP="x.x.x.x"
 export CONTAINER_CIDR="10.244.2.0/24"
 
 # Setup and join the new node.
-./kubernetes/add-node.sh
+sudo ./kubernetes/add-node.sh
 ```
 
 ### Customize
@@ -66,14 +66,14 @@ See [k8s-examples](k8s-examples/README.md).
 ## Docker
 
 ```sh
-./kubernetes/install-docker.sh
+sudo ./kubernetes/install-docker.sh
 ```
 
 ## OVS
 
-- Install ovs: `./ovs/ovs-install.sh`
-- Start ovn: `./ovs/ovn-start.sh`
+- Install ovs: `sudo ./ovs/ovs-install.sh`
+- Start ovn: `sudo ./ovs/ovn-start.sh`
 
 ## Misc
 
-- Install golang: `./misc/golang-install.sh`
+- Install golang: `sudo ./misc/golang-install.sh`

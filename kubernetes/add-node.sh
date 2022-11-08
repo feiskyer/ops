@@ -10,10 +10,10 @@ TOKEN=${TOKEN:-""}
 MASTER_IP=${MASTER_IP:-""}
 USE_MIRROR=${USE_MIRROR:-""}
 
-KUBERNTES_ROOT=$(dirname "${BASH_SOURCE}")
-source ${KUBERNTES_ROOT}/lib/util.sh
-source ${KUBERNTES_ROOT}/lib/kubernetes.sh
-source ${KUBERNTES_ROOT}/lib/cni.sh
+REPO_ROOT=$(dirname "${BASH_SOURCE}")
+source ${REPO_ROOT}/lib/util.sh
+source ${REPO_ROOT}/lib/kubernetes.sh
+source ${REPO_ROOT}/lib/cni.sh
 
 install-network-plugin() {
     case "${NETWORK_PLUGIN}" in

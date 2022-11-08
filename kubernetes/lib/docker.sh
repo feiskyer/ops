@@ -13,9 +13,15 @@ docker-install-latest() {
 
 install-docker-ubuntu() {
     apt-get update
-    apt-get install -y docker.io
-    systemctl enable docker
-    systemctl start docker
+    # apt-get install -y docker.io
+    apt-get install -y ca-certificates curl gnupg lsb-release
+    mkdir -p /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+    apt-get update
+    apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 }
 
 install-docker-centos() {
@@ -25,31 +31,7 @@ install-docker-centos() {
     else
         yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
     fi
-    yum install -y docker-ce docker-ce-cli containerd.io
+    yum install -y yum install docker-ce docker-ce-cli containerd.io docker-compose-plugin
     systemctl enable docker
     systemctl start docker
-}
-
-install-docker-v1.13-ubuntu() {
-    sh -c 'echo "deb https://apt.dockerproject.org/repo ubuntu-$(lsb_release -cs) main" > /etc/apt/sources.list.d/docker.list'
-    curl -fsSL https://apt.dockerproject.org/gpg | sudo apt-key add -
-    apt-key fingerprint 58118E89F3A912897C070ADBF76221572C52609D
-    apt-get update
-    apt-get -y install "docker-engine=1.13.1-0~ubuntu-$(lsb_release -cs)"
-    # Enable forward for docker v1.13+
-    iptables -P FORWARD ACCEPT
-}
-
-install-docker-v1.13-centos() {
- sudo tee /etc/yum.repos.d/docker.repo <<-'EOF'
-[dockerrepo]
-name=Docker Repository
-baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/
-enabled=1
-gpgcheck=1
-gpgkey=https://yum.dockerproject.org/gpg
-EOF
-  yum install -y docker-engine-1.13.1
-  # Enable forward for docker v1.13+
-  iptables -P FORWARD ACCEPT
 }

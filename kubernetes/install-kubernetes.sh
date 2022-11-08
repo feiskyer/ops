@@ -9,10 +9,10 @@ CONTAINER_CIDR=${CONTAINER_CIDR:-"10.244.1.0/24"}
 NETWORK_PLUGIN=${NETWORK_PLUGIN:-"calico"}
 USE_MIRROR=${USE_MIRROR:-""}
 
-KUBERNTES_ROOT=$(dirname "${BASH_SOURCE}")
-source ${KUBERNTES_ROOT}/lib/util.sh
-source ${KUBERNTES_ROOT}/lib/kubernetes.sh
-source ${KUBERNTES_ROOT}/lib/cni.sh
+REPO_ROOT=$(dirname "${BASH_SOURCE}")
+source ${REPO_ROOT}/lib/util.sh
+source ${REPO_ROOT}/lib/kubernetes.sh
+source ${REPO_ROOT}/lib/cni.sh
 
 install-network-plugin() {
     case "${NETWORK_PLUGIN}" in

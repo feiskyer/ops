@@ -3,9 +3,9 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-KUBERNTES_ROOT=$(dirname "${BASH_SOURCE}")
-source ${KUBERNTES_ROOT}/lib/util.sh
-source ${KUBERNTES_ROOT}/lib/cni.sh
+REPO_ROOT=$(dirname "${BASH_SOURCE}")
+source ${REPO_ROOT}/lib/util.sh
+source ${REPO_ROOT}/lib/cni.sh
 
 install-cni-src
 config-cni-list
