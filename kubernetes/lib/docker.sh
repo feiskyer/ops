@@ -31,7 +31,7 @@ install-docker-centos() {
     else
         yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
     fi
-    yum install -y yum install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    yum install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
     systemctl enable docker
     systemctl start docker
 }
