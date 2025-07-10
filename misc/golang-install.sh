@@ -1,5 +1,5 @@
 #!/bin/sh
-GOVERSION=$(curl -sL https://golang.org/VERSION?m=text | head -n 1)
+GOVERSION=$(curl -sL 'https://golang.org/VERSION?m=text' | head -n 1)
 curl -sL https://dl.google.com/go/$GOVERSION.linux-amd64.tar.gz | sudo tar -C /usr/local -zxf -
 
 echo 'export GOPATH=/go' >> ~/.bashrc
